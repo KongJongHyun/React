@@ -1,6 +1,5 @@
 import React, {Fragment} from 'react';
 import ResponsiveDrawer from './ResponsiveDrawer';
-import Copyright from './Signln';
 
 
   const App = () => (
@@ -11,7 +10,7 @@ import Copyright from './Signln';
     </Button>
   */}
     {/*<ResponsiveDrawer></ResponsiveDrawer>*/}
-    <Copyright />
+    <ResponsiveDrawer />
     </>
   );
 
