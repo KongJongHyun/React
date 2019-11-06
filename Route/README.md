@@ -1,68 +1,123 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Router와 HTML 차이
 
-## Available Scripts
+```
+   - Router :    <Route exact path="/home" component={Home} />
+     URL : localhost:3000/home
 
-In the project directory, you can run:
+   - HTML :  <a href=./home.html>
+     URL : localhost:80/home.html 
+```
+  - 두개의 차이점은 확장자를 붙이느냐 안붙이느냐가 가장 큰 차이점이다. 
+  - 아래 소스처럼 수정하게되면, URL에 (/) (/home) (/menu) 로 입력하면 이동한다.
 
-### `yarn start`
+## Router 적용방법
+ - App.js / index.js 수정 및 component 생성
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+``` 
+# App.js
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import Copyright from './component/Copyright';
+import Home from './component/Home';
+import Menu from './component/Menu';
+const App = () => (
+ 
+  <Router>
+    <>
+    <Route exact path="/" component={Copyright} />
+    <Switch>
+      <Route exact path="/home" component={Home} />
+      <Route exact path="/menu" component={Menu} />
+    </Switch>
+    </>
+  </Router>
+  
+);
 
-### `yarn test`
+export default App;
+```
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+# index.js
 
-### `yarn build`
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+ReactDOM.render(<App />, document.getElementById('app'));
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+# index.html
 
-### `yarn eject`
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+    <title>My React User App</title>
+  </head>
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+  <body>
+    <div id="app">
+    </div>
+  </body>
+</html>
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```
+# /src/component(생성)/Copyright.js(생성)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+import React from 'react';
 
-## Learn More
+const Copyright = () => {
+    return(
+        <div>
+            <h2>Hello, Copyright</h2>
+            <h3>Copyright Page</h3>
+        </div>
+    )
+};
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+export default Copyright;
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
+# /src/component/Home.js(생성)
 
-### Code Splitting
+import React from 'react';
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+const Copyright = () => {
+    return(
+        <div>
+            <h2>Hello, Home</h2>
+            <h3>Home Page</h3>
+        </div>
+    )
+};
 
-### Analyzing the Bundle Size
+export default Home;
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+```
+# /src/component(생성)/Menu.js(생성)
 
-### Making a Progressive Web App
+import React from 'react';
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+const Copyright = () => {
+    return(
+        <div>
+            <h2>Hello, Menu</h2>
+            <h3>Menu Page</h3>
+        </div>
+    )
+};
 
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+export defaultMenu;
+```
