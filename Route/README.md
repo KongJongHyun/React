@@ -13,7 +13,7 @@
 ## Router 적용방법
  - App.js / index.js 수정 및 component 생성
 
-``` 
+```js
 # App.js
 
 import React from 'react';
@@ -38,7 +38,7 @@ const App = () => (
 export default App;
 ```
 
-```
+```js
 # index.js
 
 import React from 'react';
@@ -49,7 +49,7 @@ ReactDOM.render(<App />, document.getElementById('app'));
 
 ```
 
-```
+```html
 # index.html
 
 <!DOCTYPE html>
@@ -71,7 +71,7 @@ ReactDOM.render(<App />, document.getElementById('app'));
 
 ```
 
-```
+```js
 # /src/component(생성)/Copyright.js(생성)
 
 import React from 'react';
@@ -88,7 +88,7 @@ const Copyright = () => {
 export default Copyright;
 ```
 
-```
+```js
 # /src/component/Home.js(생성)
 
 import React from 'react';
@@ -105,7 +105,7 @@ const Copyright = () => {
 export default Home;
 ```
 
-```
+```js
 # /src/component(생성)/Menu.js(생성)
 
 import React from 'react';
