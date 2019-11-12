@@ -78,6 +78,13 @@ const useStyles = makeStyles(theme => ({
   Menu_Color : {
     backgroundColor : "lightgrey",
   },
+  Mui_root : {
+    WebkitBoxShadow : "none",
+    MozBoxShadow : "none",
+    boxShadow: "none",
+    margin: "0px 0px",
+    position: "inherit",
+  },
 }));
 
 function ResponsiveDrawer(props) {
@@ -94,9 +101,10 @@ function ResponsiveDrawer(props) {
   const drawer = (
     <div>
       <div><br />고양 <strong>MICE</strong> ON </div><br />
-      <Divider />
       <div>
-      <ExpansionPanel>
+      <ExpansionPanel classes={{
+        root:classes.Mui_root
+      }}>
         <ExpansionPanelSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
@@ -133,11 +141,16 @@ function ResponsiveDrawer(props) {
         </ExpansionPanelDetails>
       </ExpansionPanel>
 
-      <ExpansionPanel>
+      <ExpansionPanel classes={{
+        root:classes.Mui_root
+      }}>
         <ExpansionPanelSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel2a-content"
           id="panel2a-header"
+          classes={{
+            root:classes.Menu_Color
+          }}
         >
           <ListItemIcon classes={{
           root: classes.Menu_Icon
@@ -145,7 +158,9 @@ function ResponsiveDrawer(props) {
           <GroupIcon /></ListItemIcon>
           <Typography className={classes.heading}>회원정보</Typography>
         </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
+        <ExpansionPanelDetails classes={{
+          root: classes.Menu_Color
+        }}>
         <List>
         {['test1', 'test2', 'test3'].map((text,index) => (
             <ListItem  button key={text} onClick={() => setCount((index % 13)+4)}>
@@ -156,18 +171,25 @@ function ResponsiveDrawer(props) {
         </ExpansionPanelDetails>
       </ExpansionPanel>
 
-      <ExpansionPanel>
+      <ExpansionPanel classes={{
+        root:classes.Mui_root
+      }}>
         <ExpansionPanelSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header"
+          classes={{
+            root:classes.Menu_Color
+          }}
         >
           <ListItemIcon classes={{
             root: classes.Menu_Icon
           }}> 
             <AccountBalanceIcon /></ListItemIcon><Typography className={classes.heading}>가맹업체</Typography>
         </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
+        <ExpansionPanelDetails classes={{
+          root: classes.Menu_Color
+        }}>
         <List>
         {['test1', 'test2', 'test3'].map((text,index) => (
             <ListItem  button key={text} onClick={() => setCount((index % 13)+7)}>
@@ -178,18 +200,25 @@ function ResponsiveDrawer(props) {
         </ExpansionPanelDetails>
       </ExpansionPanel>
 
-      <ExpansionPanel>
+      <ExpansionPanel classes={{
+        root:classes.Mui_root
+      }}>
         <ExpansionPanelSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header"
+          classes={{
+            root:classes.Menu_Color
+          }}
         >
           <ListItemIcon classes={{
             root: classes.Menu_Icon
           }}> 
             <EventAvailableIcon /></ListItemIcon><Typography className={classes.heading}>행사일정</Typography>
         </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
+        <ExpansionPanelDetails classes={{
+          root: classes.Menu_Color
+        }}>
         <List>
         {['test1', 'test2', 'test3'].map((text,index) => (
             <ListItem  button key={text} onClick={() => setCount((index % 13)+10)}>
@@ -200,10 +229,15 @@ function ResponsiveDrawer(props) {
         </ExpansionPanelDetails>
       </ExpansionPanel>
 
-      <ExpansionPanel>
+      <ExpansionPanel classes={{
+        root:classes.Mui_root
+      }}>
         <ExpansionPanelSummary
           aria-controls="panel1a-content"
           id="panel1a-header"
+          classes={{
+            root:classes.Menu_Color
+          }}
         >
           <ListItemIcon classes={{
             root: classes.Menu_Icon
