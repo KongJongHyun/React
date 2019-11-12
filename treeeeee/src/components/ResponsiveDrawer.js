@@ -1,30 +1,38 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
-import Link from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import Toolbar from '@material-ui/core/Toolbar';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Typography from '@material-ui/core/Typography';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Area from '../Menu/Area';
 import CInfo from '../Menu/CInfo';
 import CKeyword from '../Menu/CKeyword';
 import ExInfo from '../Menu/ExInfo';
 import EvBanner from '../Menu/EvBanner';
-import Main from '../Menu/Main';
+import Restaurants from '../Menu/Restaurants';
 import MemGrade from '../Menu/MemGrade';
 import Minfo from '../Menu/MInfo';
 import Statistics from '../Menu/Statistics';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
+// Icons 
+import PlaceIcon from '@material-ui/icons/Place';
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+import HotelIcon from '@material-ui/icons/Hotel';
+import RestaurantIcon from '@material-ui/icons/Restaurant';
+import CardTravelIcon from '@material-ui/icons/CardTravel';
+import GroupIcon from '@material-ui/icons/Group';
+import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
+import EventAvailableIcon from '@material-ui/icons/EventAvailable';
+import NotificationImportantIcon from '@material-ui/icons/NotificationImportant';
 
 const drawerWidth = 240;
 
@@ -56,12 +64,19 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center',
     fontFamily : 'Noto Sans KR, sans-serif',
     fontSize : 16,
+    backgroundColor: 'lightgrey',
   },
   crea_root: {
     display: "grid",
   },
   SvgIcon : {
     float:"right",
+  },
+  Menu_Icon : {
+    display: "block",    
+  },
+  Menu_Color : {
+    backgroundColor : "lightgrey",
   },
 }));
 
@@ -78,11 +93,7 @@ function ResponsiveDrawer(props) {
 
   const drawer = (
     <div>
-      <div className={classes.toolbar}>
-        <br />
-      고양 <strong>MICE</strong> ON 
-      </div>
-      <br />
+      <div><br />고양 <strong>MICE</strong> ON </div><br />
       <Divider />
       <div>
       <ExpansionPanel>
@@ -90,13 +101,31 @@ function ResponsiveDrawer(props) {
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header"
+          classes={{
+            root:classes.Menu_Color
+          }}
         >
-          <Typography className={classes.heading}>장소정보</Typography>
+          <ListItemIcon classes={{
+            root: classes.Menu_Icon
+          }}> 
+            <PlaceIcon /></ListItemIcon><Typography className={classes.heading}>장소정보</Typography>
         </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
+        <ExpansionPanelDetails classes={{
+          root: classes.Menu_Color
+        }}>
         <List>
         {['식당&카페', '숙박', '쇼핑','관광'].map((text,index) => (
             <ListItem  button key={text} onClick={() => setCount(index % 13)}>
+              <ListItemIcon>
+                {
+                  (function() {
+                    if(index === 0) return <RestaurantIcon />
+                    else if(index === 1) return <HotelIcon />
+                    else if(index === 2) return <AddShoppingCartIcon />
+                    else if(index === 3) return <CardTravelIcon />
+                  })()
+                }
+              </ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
         ))}
@@ -110,6 +139,10 @@ function ResponsiveDrawer(props) {
           aria-controls="panel2a-content"
           id="panel2a-header"
         >
+          <ListItemIcon classes={{
+          root: classes.Menu_Icon
+        }}> 
+          <GroupIcon /></ListItemIcon>
           <Typography className={classes.heading}>회원정보</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
@@ -129,7 +162,10 @@ function ResponsiveDrawer(props) {
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography className={classes.heading}>가맹업체</Typography>
+          <ListItemIcon classes={{
+            root: classes.Menu_Icon
+          }}> 
+            <AccountBalanceIcon /></ListItemIcon><Typography className={classes.heading}>가맹업체</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
         <List>
@@ -148,7 +184,10 @@ function ResponsiveDrawer(props) {
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography className={classes.heading}>행사일정</Typography>
+          <ListItemIcon classes={{
+            root: classes.Menu_Icon
+          }}> 
+            <EventAvailableIcon /></ListItemIcon><Typography className={classes.heading}>행사일정</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
         <List>
@@ -163,18 +202,14 @@ function ResponsiveDrawer(props) {
 
       <ExpansionPanel>
         <ExpansionPanelSummary
-          expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography className={classes.heading}>공지사항</Typography>
+          <ListItemIcon classes={{
+            root: classes.Menu_Icon
+          }}> 
+            <NotificationImportantIcon /></ListItemIcon><Typography>공지사항</Typography>
         </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-            sit amet blandit leo lobortis eget.
-          </Typography>
-        </ExpansionPanelDetails>
       </ExpansionPanel>
     </div>
   </div>
@@ -183,41 +218,9 @@ function ResponsiveDrawer(props) {
 
   return (
     <div className={classes.root}>
-      <CssBaseline />
-      <AppBar position="fixed" className={classes.appBar}>
-        <Toolbar classes={{
-          root: classes.crea_root
-        }}>
-          <Typography variant="h6" noWrap>
-            Goyang MICE ON Administrator
-            <Link to="./index.html">
-              <ExitToAppIcon onClick={()=>('')} classes={{
-                root: classes.SvgIcon,
-              }} />
-            </Link>
-          </Typography>
-          
-        </Toolbar>
-      </AppBar>
       <nav className={classes.drawer} aria-label="mailbox folders">
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Hidden smUp implementation="css">
-          <Drawer
-            container={container}
-            variant="temporary"
-            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            ModalProps={{
-              keepMounted: true, // Better open performance on mobile.
-            }}
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
+        
         <Hidden xsDown implementation="css">
           <Drawer
             classes={{
@@ -232,7 +235,7 @@ function ResponsiveDrawer(props) {
       </nav>
       {
         (function() {
-          if(count === 0) return <Main />
+          if(count === 0) return <Restaurants />
           else if(count === 1) return <Area />
           else if(count === 2) return <CKeyword/>
           else if(count === 3) return <CInfo />
@@ -241,7 +244,7 @@ function ResponsiveDrawer(props) {
           else if(count === 6) return <Minfo />
           else if(count === 7) return <Statistics />
           else if(count === 8) return <MemGrade />
-          else if(count === 9) return <Main />
+          else if(count === 9) return <Restaurants />
           else if(count === 10) return <Area />
           else if(count === 11) return <CKeyword />
         })()
