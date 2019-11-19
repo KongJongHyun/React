@@ -163,7 +163,6 @@ const EnhancedTableToolbar = props => {
           className = {classes.input}
           placeholder = "Search for "
           inputProps={{ 'aria-label': 'search data'}} >
-          <SearchIcon />
           </Inputbase>
       </Paper>
       <Tooltip title="Search">
