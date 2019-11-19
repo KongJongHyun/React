@@ -6,7 +6,7 @@
  - Material-UI  
    *- @Material-ui/core*  
    *- @Material-ui/icons*  
-   *- @Material-ui/core/Table
+   *- @Material-ui/core/Table*
  - Node.js  
  
  
