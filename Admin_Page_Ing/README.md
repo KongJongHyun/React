@@ -15,10 +15,11 @@
 
  ### ***진행상황***
   *- 19.11.15 < Admin Main Page 완료 >*  
-    *- Dropdown Menu*  
-    *- Hamburger Menu*  
-    *- Router 이용 페이지 이동*
-    *- 19.11.19 < Table Template 완료 >*  
+    ~~*- Dropdown Menu*~~  
+    ~~*- Hamburger Menu*~~  
+    ~~*- Router 이용 페이지 이동*~~
+    
+  *- 19.11.19 < Table Template 완료 >*  
     *- UI / UX 디자인 완료*  
     *- 식당, 숙박, 쇼핑, 관광 전부 Table 삽입 완료*  
     
