@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { lighten, makeStyles } from '@material-ui/core/styles';
+import { fade, lighten, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -15,13 +15,25 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-import Inputbase from '@material-ui/core/InputBase';
+import Button from '@material-ui/core/Button';
+
+//Icons
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
-import Button from '@material-ui/core/Button';
 import SearchIcon from '@material-ui/icons/Search';
 import SettingsIcon from '@material-ui/icons/Settings';
 import AddIcon from '@material-ui/icons/Add';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+
+// Filter Button
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+
+// Search
+import InputBase from '@material-ui/core/InputBase';
+import Select from '@material-ui/core/Select';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
 
 function createData(date, cname, area, fkind, ctel, cing) {
   return { date, cname, area, fkind, ctel, cing };
@@ -137,12 +149,87 @@ const useToolbarStyles = makeStyles(theme => ({
     flex: '1 1 100%',
     fontWeight: "bold"
   },
+  fontedsize: {
+    fontSize: '12px'
+  },
+  button: {
+    display: 'block',
+    marginTop: theme.spacing(2),
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 150,
+  },
 }));
+
+const SearchUsingStyles = makeStyles(theme => ({
+  root: {
+    flexGrow:1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2)
+  },
+  title: {
+    floxGrow: 1,
+    display: 'none',
+    [theme.breakpoints.up('sm')]: {
+      display:'block',
+    },
+  },
+  search: {
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.common.white, 0.25),
+    },
+    marginLeft: 0,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(1),
+      width: 'auto',
+    },
+  },
+  searchIcon: {
+    width: theme.spacing(7),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  inputRoot: {
+    color: 'inherit',
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 7),
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: 120,
+      '&:focus': {
+        width: 200,
+      },
+    },
+  },
+}))
 
 const EnhancedTableToolbar = props => {
   const classes = useToolbarStyles();
+  const search_classes = SearchUsingStyles();
   const { numSelected } = props;
-
+  const [set, setSet] = React.useState('');
+  const [open, setOpen] = React.useState(false);
+  const handleChange = event => {
+    setSet(event.target.value);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleOpen = () => {
+    setOpen(true);
+  }
   return (
     <Toolbar
       className={clsx(classes.root, {
@@ -158,18 +245,19 @@ const EnhancedTableToolbar = props => {
           맛집 & 카페
         </Typography>
       )}
-      <Paper component="form" className={classes.root} >
-        <Inputbase
-          className = {classes.input}
-          placeholder = "Search for "
-          inputProps={{ 'aria-label': 'search data'}} >
-          </Inputbase>
-      </Paper>
-      <Tooltip title="Search">
-          <IconButton aria-label="Search">
-          <SearchIcon />
-          </IconButton>
-        </Tooltip>
+          <div className={search_classes.search}>
+            <div className={search_classes.searchIcon}>
+              <SearchIcon />
+            </div>
+            <InputBase
+              placeholder="Search…"
+              classes={{
+                root: search_classes.inputRoot,
+                input: search_classes.inputInput,
+              }}
+              inputProps={{ 'aria-label': 'search' }}
+            />
+          </div>
       {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton aria-label="delete">
@@ -177,11 +265,30 @@ const EnhancedTableToolbar = props => {
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton aria-label="filter list">
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
+        <>
+        <FormControl className={classes.formControl}>
+            <Select
+            IconComponent={() => (
+              <ArrowDropDownIcon />
+            )}
+              labelId="filter-button"
+              id="filter-button"
+              open={open}
+              onClose={handleClose}
+              onOpen={handleOpen}
+              value={set}
+              onChange={handleChange} 
+              >
+                <MenuItem value=""><em>None</em></MenuItem>
+                <MenuItem value="date">가입일</MenuItem>
+                <MenuItem value="cname">업체 이름</MenuItem>
+                <MenuItem value="area">지역</MenuItem>
+                <MenuItem value="fkind">음식종류</MenuItem>
+                <MenuItem value="ctel">업체 전화번호</MenuItem>
+                <MenuItem value="cing">연동 상태</MenuItem>
+             </Select>
+         </FormControl>
+        </>
       )}
       <Tooltip title="Setting">
         <IconButton aria-label="Setting">
