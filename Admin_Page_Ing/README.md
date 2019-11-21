@@ -33,34 +33,34 @@
   *- 화면설계서 참고하여 페이지 추가제작*   
 
 ### ***19.11.19 이후 작업 (예정)***
-  *- Table에 들어간 버튼 에 대한 기능 로직 구현 *
+  *- Table에 들어간 버튼 에 대한 기능 로직 구현*
 
 -----------------------
 - ## Components/
  - ***App.js***  *//<Router 설정 & Page Move >* 
- - ***ResponsiveDrawer.js***  *//<Appbar & DropDown SubMenu onClick => Count 값 변동으로 Re-rendering => Router  사용하여 URL로 변경 > *
+ - ***ResponsiveDrawer.js***   *//<Appbar & DropDown SubMenu onClick => Count 값 변동으로 Re-rendering => Router  사용하여 URL로 변경 >*
 
 -----------------------
 - ## Menu/
 - ***ResponsiveDrawer*** *에서 onClick한 SubDropDownMenu중 각각 버튼과 연결된 js파일*
 
- - ***Hotel.js***  *//<장소정보-숙박 > Table * 
- - ***CInfo.js***  * //<장소정보-관광 > Table * 
- - ***Shopping.js***  * //<장소정보-쇼핑 > Table * 
- - ***EvBanner.js***  * // <회원정보-예비용-숙박메뉴 > *
- - ***PerInfo.js***  * //<회원정보-사용자일반 > Table * 
- - ***MemGrade.js***  * //<이벤트관리-예비용-식당&카페메뉴 > * 
- - ***MInfo.js***  * //<회원정보-예비용-쇼핑메뉴 > * 
- - ***Restaurants.js***  * //<장소정보-맛집&카페 > Table * 
- - ***Statistics.js***  * //<회원정보-예비용-관광메뉴 >* 
+ - ***Hotel.js***  *//<장소정보-숙박 > Table*
+ - ***CInfo.js***  *//<장소정보-관광 > Table* 
+ - ***Shopping.js***  *//<장소정보-쇼핑 > Table* 
+ - ***EvBanner.js***  *// <회원정보-예비용-숙박메뉴 >*
+ - ***PerInfo.js***  *//<회원정보-사용자일반 > Table* 
+ - ***MemGrade.js***  *//<이벤트관리-예비용-식당&카페메뉴 >* 
+ - ***MInfo.js***  *//<회원정보-예비용-쇼핑메뉴 >* 
+ - ***Restaurants.js***  *//<장소정보-맛집&카페 > Table* 
+ - ***Statistics.js***  *//<회원정보-예비용-관광메뉴 >* 
 
 -----------------------
 - ## Menu/info/
 
-- ***ResponsiveDrawer -> SubMenu*** *에서 상세정보보기(Button) onClick 하면, ***Deepinfo *** *페이지로 이동*
+- ***ResponsiveDrawer -> SubMenu*** *에서 상세정보보기(Button) onClick 하면,* ***Deepinfo*** *페이지로 이동*
 - ***Deepinfo.js***  *에는 총 4개의 메뉴가 존재(세부정보 / 계정설정 / 예약내역 / 신고내역)*
 
- - ***Ddata.js***  * // 세부정보에 대한 Typography 와 TextField 모음 js*
- - ***Deepinfo.js***  * // 총 4개의 메뉴가 존재하는 Scroll Button 모음 js* 
- - ***Filter.js***  * // Restaurants의 FilterIcon 과 엮을 js* 
- - ***Register.js***  * // 계정정보에 대한 Typography 와 TextField 모음 js*
+ - ***Ddata.js***  *// 세부정보에 대한 Typography 와 TextField 모음 js*
+ - ***Deepinfo.js***  *// 총 4개의 메뉴가 존재하는 Scroll Button 모음 js* 
+ - ***Filter.js***  *// Restaurants의 FilterIcon 과 엮을 js* 
+ - ***Register.js***  *// 계정정보에 대한 Typography 와 TextField 모음 js*
