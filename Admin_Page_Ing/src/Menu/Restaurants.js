@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import { fade, lighten, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -16,29 +15,25 @@ import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
+import Filter from './Info/Filter';
+import {Link} from 'react-router-dom';
 
 //Icons
 import DeleteIcon from '@material-ui/icons/Delete';
 import SearchIcon from '@material-ui/icons/Search';
 import SettingsIcon from '@material-ui/icons/Settings';
 import AddIcon from '@material-ui/icons/Add';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-
-// Filter Button
-import MenuItem from '@material-ui/core/MenuItem';
+import FilterIcon from '@material-ui/icons/FilterList'
 
 // Search
 import InputBase from '@material-ui/core/InputBase';
-import Select from '@material-ui/core/Select';
-import FormControl from '@material-ui/core/FormControl';
-
-function createData(date, cname, area, fkind, ctel, cing) {
-  return { date, cname, area, fkind, ctel, cing };
+function createData(date, cname, area, fkind, ctel, cing, cinfo) {
+  return { date, cname, area, fkind, ctel, cing, cinfo };
 }
 
 const rows = [
-  createData("2019.11.18","test","일산동구","한식","031-1234-5678","연동 완료"),
-  createData("2019.11.18","test1","일산서구","중식","031-2345-6789", "연동 대기중")
+  createData("2019.11.18", "test", "일산동구", "한식", "031-1234-5678", "연동 완료" ),
+  createData("2019.11.18", "test1", "일산서구", "중식", "031-2345-6789", "연동 대기중" )
 ];
 
 function desc(a, b, orderBy) {
@@ -67,11 +62,12 @@ function getSorting(order, orderBy) {
 
 const headCells = [
   { id: 'date', numeric: false, disablePadding: true, label: '가입일' },
-  { id: 'cname', numeric: false, disablePadding: false, label: '업체 이름' },
+  { id: 'cname', numeric: false, disablePadding: true, label: '업체 이름' },
   { id: 'area', numeric: false, disablePadding: false, label: '지역' },
-  { id: 'fkind', numeric: false, disablePadding: false, label: '음식종류' },
+  { id: 'fkind', numeric: false, disablePadding: true, label: '음식종류' },
   { id: 'ctel', numeric: false, disablePadding: false, label: '업체 전화번호' },
   { id: 'cing', numeric: false, disablePadding: false, label: '연동 상태' },
+  { id: 'cinfo', numeric: false, disablePadding: false, label: '상세 정보' },
 ];
 
 function EnhancedTableHead(props) {
@@ -79,9 +75,9 @@ function EnhancedTableHead(props) {
   const createSortHandler = property => event => {
     onRequestSort(event, property);
   };
-
   return (
-    <TableHead style={{backgroundColor:"lightgrey"}}>
+    <>
+    <TableHead style={{ backgroundColor: "lightgrey" }}>
       <TableRow>
         <TableCell padding="checkbox">
           <Checkbox
@@ -92,6 +88,7 @@ function EnhancedTableHead(props) {
           />
         </TableCell>
         {headCells.map(headCell => (
+          
           <TableCell
             key={headCell.id}
             align={headCell.numeric ? 'right' : 'left'}
@@ -114,6 +111,7 @@ function EnhancedTableHead(props) {
         ))}
       </TableRow>
     </TableHead>
+    </>
   );
 }
 
@@ -135,13 +133,13 @@ const useToolbarStyles = makeStyles(theme => ({
   highlight:
     theme.palette.type === 'light'
       ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-        }
+        color: theme.palette.secondary.main,
+        backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+      }
       : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
-        },
+        color: theme.palette.text.primary,
+        backgroundColor: theme.palette.secondary.dark,
+      },
   title: {
     flex: '1 1 100%',
     fontWeight: "bold"
@@ -155,13 +153,12 @@ const useToolbarStyles = makeStyles(theme => ({
   },
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 150,
   },
 }));
 
 const SearchUsingStyles = makeStyles(theme => ({
   root: {
-    flexGrow:1,
+    flexGrow: 1,
   },
   menuButton: {
     marginRight: theme.spacing(2)
@@ -170,7 +167,7 @@ const SearchUsingStyles = makeStyles(theme => ({
     floxGrow: 1,
     display: 'none',
     [theme.breakpoints.up('sm')]: {
-      display:'block',
+      display: 'block',
     },
   },
   search: {
@@ -218,6 +215,7 @@ const EnhancedTableToolbar = props => {
   const { numSelected } = props;
   const [set, setSet] = React.useState('');
   const [open, setOpen] = React.useState(false);
+
   const handleChange = event => {
     setSet(event.target.value);
   };
@@ -228,75 +226,47 @@ const EnhancedTableToolbar = props => {
     setOpen(true);
   }
   return (
-    <Toolbar
-      className={clsx(classes.root, {
-        [classes.highlight]: numSelected > 0,
-      })}
-    >
-      {numSelected > 0 ? (
-        <Typography className={classes.title} color="inherit" variant="subtitle1">
-          {numSelected} selected
-        </Typography>
-      ) : (
+
+    <Toolbar className={classes.root}>
+      <>
         <Typography className={classes.title} variant="h6" id="tableTitle">
           맛집 & 카페
         </Typography>
-      )}
-          <div className={search_classes.search}>
-            <div className={search_classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: search_classes.inputRoot,
-                input: search_classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
+        <div className={search_classes.search}>
+          <div className={search_classes.searchIcon}>
+            <SearchIcon />
           </div>
-      {numSelected > 0 ? (
+          <InputBase
+            placeholder="Search…"
+            classes={{
+              root: search_classes.inputRoot,
+              input: search_classes.inputInput,
+            }}
+            inputProps={{ 'aria-label': 'search' }}
+          />
+        </div>
         <Tooltip title="Delete">
-          <IconButton aria-label="delete">
+          <IconButton onClick={handleChange}
+            aria-label="delete">
             <DeleteIcon />
           </IconButton>
         </Tooltip>
-      ) : (
-        <>
-        <FormControl className={classes.formControl}>
-            <Select
-            IconComponent={() => (
-              <ArrowDropDownIcon />
-            )}
-              labelId="filter-button"
-              id="filter-button"
-              open={open}
-              onClose={handleClose}
-              onOpen={handleOpen}
-              value={set}
-              onChange={handleChange} 
-              >
-                <MenuItem value=""><em>None</em></MenuItem>
-                <MenuItem value="date">가입일</MenuItem>
-                <MenuItem value="cname">업체 이름</MenuItem>
-                <MenuItem value="area">지역</MenuItem>
-                <MenuItem value="fkind">음식종류</MenuItem>
-                <MenuItem value="ctel">업체 전화번호</MenuItem>
-                <MenuItem value="cing">연동 상태</MenuItem>
-             </Select>
-         </FormControl>
-        </>
-      )}
-      <Tooltip title="Setting">
-        <IconButton aria-label="Setting">
-          <SettingsIcon />
+        <Tooltip title="Filter">
+          <IconButton aria-label="Filter" onClick={handleOpen}>
+            <FilterIcon />
           </IconButton>
-      </Tooltip>
-      <Tooltip title="Add Place">
-        <IconButton aria-label="Add Place">
-          <AddIcon />
+        </Tooltip>
+        <Tooltip title="Setting">
+          <IconButton aria-label="Setting">
+            <SettingsIcon />
           </IconButton>
-      </Tooltip>
+        </Tooltip>
+        <Tooltip title="Add Place">
+          <IconButton aria-label="Add Place">
+            <AddIcon />
+          </IconButton>
+        </Tooltip>
+      </>
     </Toolbar>
   );
 };
@@ -304,7 +274,6 @@ const EnhancedTableToolbar = props => {
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
-
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
@@ -341,8 +310,10 @@ const useStyles = makeStyles(theme => ({
   fab: {
     margin: theme.spacing(1),
   },
+  delete: {
+    borderBottom: 0
+  },
 }));
-
 export default function Restaurants() {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
@@ -396,37 +367,38 @@ export default function Restaurants() {
     setPage(0);
   };
 
-
   const isSelected = name => selected.indexOf(name) !== -1;
-
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
+  if(open == "true")
+  {
+    <Filter />
+  }
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <div className={classes.tableWrapper}>
-      <Button color="primary" className={classes.button}>
-        연동 완료 #
+          <Button color="primary" className={classes.button}>
+            연동 완료 #
       </Button>
-      <Button color="secondary" className={classes.button}>
-        연동 대기중 #
+          <Button color="secondary" className={classes.button}>
+            연동 대기중 #
       </Button>
-      <Button color="inherit" className={classes.button}>
-        가맹업체 심사중 #
+          <Button color="inherit" className={classes.button}>
+            가맹업체 심사중 #
       </Button>
-      <Button color="inherit" className={classes.button}>
-        퍼블리싱 #
+          <Button color="inherit" className={classes.button}>
+            퍼블리싱 #
       </Button>
-      <Button color="inherit" className={classes.button}>
-        편집중 #
+          <Button color="inherit" className={classes.button}>
+            편집중 #
       </Button>
           <Table
             className={classes.table}
             aria-labelledby="tableTitle"
             aria-label="enhanced table"
           >
-            
             <EnhancedTableHead
               classes={classes}
               numSelected={selected.length}
@@ -436,14 +408,13 @@ export default function Restaurants() {
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
             />
-            
+
             <TableBody>
               {stableSort(rows, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.ctel);
                   const labelId = `enhanced-table-checkbox-${index}`;
-
                   return (
                     <TableRow
                       hover
@@ -468,12 +439,31 @@ export default function Restaurants() {
                       <TableCell align="left">{row.fkind}</TableCell>
                       <TableCell align="left">{row.ctel}</TableCell>
                       <TableCell align="left">{row.cing}</TableCell>
+
+                      <TableCell align="left">
+                        <Button variant="contained" color="secondary" className={classes.button}>
+                        <Link 
+                          to={{
+                          pathname: `/home/${row.cname}`,
+                          query: {
+                            name: row.cname,
+                            area: row.area,
+                            fkind: row.fkind,
+                            ctel: row.ctel,
+                            cing: row.cing,
+                            }
+                          }}
+                          style={{textDecoration:"none",color:"white"}}>상세정보확인</Link>
+                          </Button>
+                          </TableCell>
                     </TableRow>
                   );
                 })}
               {emptyRows > 0 && (
                 <TableRow>
-                  <TableCell colSpan={6} />
+                  <TableCell colSpan={6} classes={{
+                    root: classes.delete
+                  }} />
                 </TableRow>
               )}
             </TableBody>
@@ -485,6 +475,7 @@ export default function Restaurants() {
           count={rows.length}
           rowsPerPage={rowsPerPage}
           page={page}
+          labelRowsPerPage="페이지 당 출력 개수"
           backIconButtonProps={{
             'aria-label': 'previous page',
           }}
