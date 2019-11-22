@@ -1,6 +1,5 @@
 import React, { useState, Fragment, useEffect } from 'react';
 import clsx from 'clsx';
-import PropTypes from 'prop-types';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -18,8 +17,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import StarBorder from '@material-ui/icons/StarBorder';
-import Hidden from '@material-ui/core/Hidden';
+import {Link, useHistory} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 // Icons 
 import PlaceIcon from '@material-ui/icons/Place';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
@@ -33,10 +32,10 @@ import NotificationImportantIcon from '@material-ui/icons/NotificationImportant'
 import PersonIcon from '@material-ui/icons/Person';
 
 //pages
-import Area from '../Menu/Area';
-import CInfo from '../Menu/CInfo';
-import CKeyword from '../Menu/CKeyword';
-import ExInfo from '../Menu/ExInfo';
+import Hotel from '../Menu/Hotel';
+import Travel from '../Menu/Travel';
+import Shopping from '../Menu/Shopping';
+import PerInfo from '../Menu/PerInfo';
 import EvBanner from '../Menu/EvBanner';
 import Restaurants from '../Menu/Restaurants';
 import MemGrade from '../Menu/MemGrade';
@@ -112,8 +111,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function ResponsiveDrawer(props) {
-  const { container } = props;
+const ResponsiveDrawer = () => {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = useState(true);
@@ -122,6 +120,7 @@ function ResponsiveDrawer(props) {
   const [dropdown1, setDropdown1] = useState(false);
   const [dropdown2, setDropdown2] = useState(false);
   const [dropdown3, setDropdown3] = useState(false);
+  const history = useHistory();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -144,8 +143,70 @@ function ResponsiveDrawer(props) {
     setDropdown3(!dropdown3);
   };
 
+  useEffect(() => {    
+    console.log(count)
+    if(count == 0) {
+    history.push('/home/restaurants')
+    }
+    else if(count == 1) {
+      history.push('/home/hotel')
+    }
+    else if(count == 2) {
+      history.push('/home/shopping')
+    }
+    else if(count == 3) {
+      history.push('/home/travel')
+    }
+    else if(count == 4) {
+      history.push('/home/perinfo')
+    }
+    else if(count == 5) {
+      history.push('/home/evbanner')
+    }
+    else if(count == 6) {
+      history.push('/home/minfo')
+    }
+    else if(count == 7) {
+      history.push('/home/statistics')
+    }
+    else if(count == 8) {
+      history.push('/home/memgrade')
+    }
+    else if(count == 9) {
+      history.push('/home/restaurants')
+    }
+    else if(count == 10) {
+      history.push('/home/hotel')
+    }
+    else if(count == 11) {
+      history.push('/home/shopping')
+    }
+    else if(count == 12) {
+      history.push('/home/travel')
+    }
+    else if(count == 13) {
+      history.push('/home/perinfo')
+    }
+    else if(count == 14) {
+      history.push('/home/evbanner')
+    }
+    else if(count == 15) {
+      history.push('/home/minfo')
+    }
+    else if(count == 16) {
+      history.push('/home/statistics')
+    }
+    else if(count == 17) {
+      history.push('/home/memgrade')
+    }
+    else if(count == 18) {
+      history.push('/home/restaurants')
+    }
+
+  }, [count])
+
   return (
-    <div className={classes.root}>
+    <div className={classes.root}>      
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -190,6 +251,7 @@ function ResponsiveDrawer(props) {
         </div>
         <List>
           <Fragment>
+            
             <ListItem button key="dropdown" onClick={handleClick}>
               <ListItemIcon>
                 <PlaceIcon />
@@ -199,8 +261,9 @@ function ResponsiveDrawer(props) {
             </ListItem>
             <Collapse in={dropdown} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-              {['식당&카페', '숙박', '쇼핑','관광'].map((text,index) => (
-                <ListItem  className={classes.nested} button key={text} onClick={() => setCount(index % 16)}>
+              {['식당&카페', '숙박', '쇼핑','관광'].map((text,index) => (  
+                // <Link to='/home/restaurants'></Link>      
+                <ListItem  className={classes.nested} button key={text} onClick={() => setCount(index % 18)}>
                   <ListItemIcon>
                 {
                   (function() {
@@ -212,7 +275,8 @@ function ResponsiveDrawer(props) {
                 }
               </ListItemIcon>
                   <ListItemText primary={text} />
-                </ListItem>
+                </ListItem>        
+                                         
               ))}
               </List>
             </Collapse>
@@ -231,7 +295,7 @@ function ResponsiveDrawer(props) {
             <Collapse in={dropdown1} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
               {['사용자일반', '숙박', '쇼핑','관광'].map((text,index) => (
-                <ListItem  className={classes.nested} button key={text} onClick={() => setCount((index % 16)+4)}>
+                <ListItem  className={classes.nested} button key={text} onClick={() => setCount((index % 18)+4)}>
                   <ListItemIcon>
                 {
                   (function() {
@@ -262,7 +326,7 @@ function ResponsiveDrawer(props) {
             <Collapse in={dropdown2} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
               {['식당&카페', '숙박', '쇼핑','관광'].map((text,index) => (
-                <ListItem  className={classes.nested} button key={text} onClick={() => setCount((index % 16)+8)}>
+                <ListItem  className={classes.nested} button key={text} onClick={() => setCount((index % 18)+8)}>
                   <ListItemIcon>
                 {
                   (function() {
@@ -293,7 +357,7 @@ function ResponsiveDrawer(props) {
             <Collapse in={dropdown3} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
               {['식당&카페', '숙박', '쇼핑','관광'].map((text,index) => (
-                <ListItem  className={classes.nested} button key={text} onClick={() => setCount((index % 16)+12)}>
+                <ListItem  className={classes.nested} button key={text} onClick={() => setCount((index % 18)+12)}>
                   <ListItemIcon>
                 {
                   (function() {
@@ -314,7 +378,7 @@ function ResponsiveDrawer(props) {
 
         <List>
           <Fragment>
-            <ListItem button key="dropdown" onClick={() => setCount(16)}>
+            <ListItem button key="dropdown" onClick={() => setCount(18)}>
               <ListItemIcon>
               <NotificationImportantIcon />
               </ListItemIcon>
@@ -330,27 +394,6 @@ function ResponsiveDrawer(props) {
         })}
       >
         <div className={classes.drawerHeader} />
-        {
-        (function() {          
-          if(count === 0) return <Restaurants match={props.match}/>
-          else if(count === 1) return <Area />
-          else if(count === 2) return <CKeyword/>
-          else if(count === 3) return <CInfo />
-          else if(count === 4) return <ExInfo />
-          else if(count === 5) return <EvBanner />
-          else if(count === 6) return <Minfo />
-          else if(count === 7) return <Statistics />
-          else if(count === 8) return <MemGrade />
-          else if(count === 9) return <Restaurants />
-          else if(count === 10) return <Area />
-          else if(count === 11) return <CKeyword />
-          else if(count === 12) return <CInfo />
-          else if(count === 13) return <ExInfo />
-          else if(count === 14) return <EvBanner />
-          else if(count === 15) return <Minfo />
-          else if(count === 16) return <Area />
-          })()
-      }
       </main>
     </div>
   );

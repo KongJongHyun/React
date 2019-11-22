@@ -16,7 +16,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
 import Filter from './Info/Filter';
-import {Link} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 
 //Icons
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -320,6 +320,7 @@ export default function Restaurants() {
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
+  const history = useHistory();
 
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -439,12 +440,10 @@ export default function Restaurants() {
                       <TableCell align="left">{row.fkind}</TableCell>
                       <TableCell align="left">{row.ctel}</TableCell>
                       <TableCell align="left">{row.cing}</TableCell>
-
-                      <TableCell align="left">
-                        <Button variant="contained" color="secondary" className={classes.button}>
-                        <Link 
+                      <TableCell align="left">                        
+                      <Link 
                           to={{
-                          pathname: `/home/${row.cname}`,
+                          pathname: `${history.location.pathname}/` + `${row.cname}`,
                           query: {
                             name: row.cname,
                             area: row.area,
@@ -452,9 +451,11 @@ export default function Restaurants() {
                             ctel: row.ctel,
                             cing: row.cing,
                             }
-                          }}
-                          style={{textDecoration:"none",color:"white"}}>상세정보확인</Link>
+                          }}>
+                        <Button variant="contained" color="secondary" className={classes.button}  style={{textDecoration:"none",color:"white"}}>
+                          정보확인                        
                           </Button>
+                          </Link>
                           </TableCell>
                     </TableRow>
                   );
