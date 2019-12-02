@@ -10,6 +10,7 @@ import { green } from '@material-ui/core/colors';
 import Box from '@material-ui/core/Box';
 import Ddata from './Ddata';
 import Register from './Register';
+import { Button } from '@material-ui/core';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -60,13 +61,14 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: green[600],
     },
   },
-  
+
 }));
 
-const Deepinfo = ({location,match}) => {
+const Deepinfo = ({ location, match }) => {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
+
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -75,9 +77,10 @@ const Deepinfo = ({location,match}) => {
   const handleChangeIndex = index => {
     setValue(index);
   };
+
   return (
     <div className={classes.root}>
-        <Typography classes={{root: classes.typo }} variant="h4">{location.query.name}</Typography>
+      <Typography classes={{ root: classes.typo }} variant="h4">{location.query.name}</Typography>
       <AppBar position="static" color="default">
         <Tabs
           value={value}
@@ -99,16 +102,16 @@ const Deepinfo = ({location,match}) => {
         onChangeIndex={handleChangeIndex}
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
-            <Ddata name={location.query.name} area={location.query.area} ctel={location.query.ctel}/>
+          <Ddata name={location.query.name} area={location.query.area} ctel={location.query.ctel} />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-            <Register />
+          <Register />
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
-            <Ddata />
+          <Ddata />
         </TabPanel>
         <TabPanel value={value} index={3} dir={theme.direction}>
-            <Ddata />
+          <Ddata />
         </TabPanel>
       </SwipeableViews>
     </div>

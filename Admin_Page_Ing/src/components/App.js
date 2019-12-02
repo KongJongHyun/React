@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import Content from './content';
 
   const App = ({match}) => (
-    // <ResponsiveDrawer />
     <Router basename='/'>      
       <Switch>            
             <Route path = '/' component={Content} />

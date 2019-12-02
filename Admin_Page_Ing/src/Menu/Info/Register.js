@@ -22,12 +22,13 @@ const Ddata = props => {
     const classes = useStyles();
     const theme = useTheme();
     return (
-        <div classes={{root:classes.container}}>
+        <div classes={{ root: classes.container }}>
             <Typography classes={{ root: classes.typo }} variant="subtitle1">ID
         <TextField
                     id="outlined-full-width"
                     style={{ margin: 8 }}
                     defaultValue={props.name}
+                    placeholder="ID를 입력하세요."
                     fullWidth
                     margin="normal"
                     InputLabelProps={{

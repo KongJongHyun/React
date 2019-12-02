@@ -144,7 +144,6 @@ const ResponsiveDrawer = () => {
   };
 
   useEffect(() => {    
-    console.log(count)
     if(count == 0) {
     history.push('/home/restaurants')
     }
@@ -195,12 +194,6 @@ const ResponsiveDrawer = () => {
     }
     else if(count == 16) {
       history.push('/home/statistics')
-    }
-    else if(count == 17) {
-      history.push('/home/memgrade')
-    }
-    else if(count == 18) {
-      history.push('/home/restaurants')
     }
 
   }, [count])
@@ -263,7 +256,7 @@ const ResponsiveDrawer = () => {
               <List component="div" disablePadding>
               {['식당&카페', '숙박', '쇼핑','관광'].map((text,index) => (  
                 // <Link to='/home/restaurants'></Link>      
-                <ListItem  className={classes.nested} button key={text} onClick={() => setCount(index % 18)}>
+                <ListItem  className={classes.nested} button key={text} onClick={() => setCount(index % 16)}>
                   <ListItemIcon>
                 {
                   (function() {
@@ -295,7 +288,7 @@ const ResponsiveDrawer = () => {
             <Collapse in={dropdown1} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
               {['사용자일반', '숙박', '쇼핑','관광'].map((text,index) => (
-                <ListItem  className={classes.nested} button key={text} onClick={() => setCount((index % 18)+4)}>
+                <ListItem  className={classes.nested} button key={text} onClick={() => setCount((index % 16)+4)}>
                   <ListItemIcon>
                 {
                   (function() {
@@ -326,7 +319,7 @@ const ResponsiveDrawer = () => {
             <Collapse in={dropdown2} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
               {['식당&카페', '숙박', '쇼핑','관광'].map((text,index) => (
-                <ListItem  className={classes.nested} button key={text} onClick={() => setCount((index % 18)+8)}>
+                <ListItem  className={classes.nested} button key={text} onClick={() => setCount((index % 16)+8)}>
                   <ListItemIcon>
                 {
                   (function() {
@@ -357,7 +350,7 @@ const ResponsiveDrawer = () => {
             <Collapse in={dropdown3} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
               {['식당&카페', '숙박', '쇼핑','관광'].map((text,index) => (
-                <ListItem  className={classes.nested} button key={text} onClick={() => setCount((index % 18)+12)}>
+                <ListItem  className={classes.nested} button key={text} onClick={() => setCount((index % 16)+12)}>
                   <ListItemIcon>
                 {
                   (function() {
@@ -378,7 +371,7 @@ const ResponsiveDrawer = () => {
 
         <List>
           <Fragment>
-            <ListItem button key="dropdown" onClick={() => setCount(18)}>
+            <ListItem button key="dropdown" onClick={() => setCount(16)}>
               <ListItemIcon>
               <NotificationImportantIcon />
               </ListItemIcon>

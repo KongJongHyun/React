@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { fade, lighten, makeStyles } from '@material-ui/core/styles';
+import { fade, lighten, makeStyles, withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -15,8 +15,11 @@ import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
-import Filter from './Info/Filter';
-import {Link, useHistory} from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import MenuItem from '@material-ui/core/MenuItem';
+import CheckBoxt from './Info/Checkbox';
+import Menu from '@material-ui/core/Menu';
+
 
 //Icons
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -32,8 +35,8 @@ function createData(date, cname, area, fkind, ctel, cing, cinfo) {
 }
 
 const rows = [
-  createData("2019.11.18", "test", "일산동구", "한식", "031-1234-5678", "연동 완료" ),
-  createData("2019.11.18", "test1", "일산서구", "중식", "031-2345-6789", "연동 대기중" )
+  createData("2019.11.18", "test", "일산동구", "한식", "031-1234-5678", "연동 완료"),
+  createData("2019.11.18", "test1", "일산서구", "중식", "031-2345-6789", "연동 대기중")
 ];
 
 function desc(a, b, orderBy) {
@@ -77,40 +80,40 @@ function EnhancedTableHead(props) {
   };
   return (
     <>
-    <TableHead style={{ backgroundColor: "lightgrey" }}>
-      <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{ 'aria-label': 'select all data' }}
-          />
-        </TableCell>
-        {headCells.map(headCell => (
-          
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'default'}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={order}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <span className={classes.visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </span>
-              ) : null}
-            </TableSortLabel>
+      <TableHead style={{ backgroundColor: "lightgrey" }}>
+        <TableRow>
+          <TableCell padding="checkbox">
+            <Checkbox
+              indeterminate={numSelected > 0 && numSelected < rowCount}
+              checked={numSelected === rowCount}
+              onChange={onSelectAllClick}
+              inputProps={{ 'aria-label': 'select all data' }}
+            />
           </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
+          {headCells.map(headCell => (
+
+            <TableCell
+              key={headCell.id}
+              align={headCell.numeric ? 'right' : 'left'}
+              padding={headCell.disablePadding ? 'none' : 'default'}
+              sortDirection={orderBy === headCell.id ? order : false}
+            >
+              <TableSortLabel
+                active={orderBy === headCell.id}
+                direction={order}
+                onClick={createSortHandler(headCell.id)}
+              >
+                {headCell.label}
+                {orderBy === headCell.id ? (
+                  <span className={classes.visuallyHidden}>
+                    {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                  </span>
+                ) : null}
+              </TableSortLabel>
+            </TableCell>
+          ))}
+        </TableRow>
+      </TableHead>
     </>
   );
 }
@@ -155,7 +158,36 @@ const useToolbarStyles = makeStyles(theme => ({
     margin: theme.spacing(1),
   },
 }));
+const StyledMenu = withStyles({
+  paper: {
+    border: '1px solid #d3d4d5',
+  },
+})(props => (
+  <Menu
+    elevation={0}
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'center',
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'center',
+    }}
+    {...props}
+  />
+));
 
+const StyledMenuItem = withStyles(theme => ({
+  root: {
+    '&:focus': {
+      backgroundColor: theme.palette.main,
+      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+        color: theme.palette.common.white,
+      },
+    },
+  },
+}))(MenuItem);
 const SearchUsingStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -219,12 +251,19 @@ const EnhancedTableToolbar = props => {
   const handleChange = event => {
     setSet(event.target.value);
   };
-  const handleClose = () => {
-    setOpen(false);
-  };
   const handleOpen = () => {
     setOpen(true);
-  }
+  };
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
 
     <Toolbar className={classes.root}>
@@ -251,11 +290,22 @@ const EnhancedTableToolbar = props => {
             <DeleteIcon />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Filter">
-          <IconButton aria-label="Filter" onClick={handleOpen}>
-            <FilterIcon />
-          </IconButton>
-        </Tooltip>
+        <IconButton aria-label="Filter" onClick={handleClick}>
+          <FilterIcon />
+        </IconButton>
+        <StyledMenu
+          id="customized-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          <StyledMenuItem
+            focusRipple={false}
+          >
+            <CheckBoxt />
+          </StyledMenuItem>
+        </StyledMenu>
         <Tooltip title="Setting">
           <IconButton aria-label="Setting">
             <SettingsIcon />
@@ -370,11 +420,6 @@ export default function Restaurants() {
 
   const isSelected = name => selected.indexOf(name) !== -1;
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-
-  if(open == "true")
-  {
-    <Filter />
-  }
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -440,23 +485,24 @@ export default function Restaurants() {
                       <TableCell align="left">{row.fkind}</TableCell>
                       <TableCell align="left">{row.ctel}</TableCell>
                       <TableCell align="left">{row.cing}</TableCell>
-                      <TableCell align="left">                        
-                      <Link 
+                      <TableCell align="left">
+                        <Link
                           to={{
-                          pathname: `${history.location.pathname}/` + `${row.cname}`,
-                          query: {
-                            name: row.cname,
-                            area: row.area,
-                            fkind: row.fkind,
-                            ctel: row.ctel,
-                            cing: row.cing,
+                            pathname: `${history.location.pathname}/` + `${row.cname}`,
+                            query: {
+                              name: row.cname,
+                              area: row.area,
+                              fkind: row.fkind,
+                              ctel: row.ctel,
+                              cing: row.cing,
                             }
-                          }}>
-                        <Button variant="contained" color="secondary" className={classes.button}  style={{textDecoration:"none",color:"white"}}>
-                          정보확인                        
+                          }}
+                          style={{ textDecoration: 'none' }}>
+                          <Button variant="contained" color="secondary" className={classes.button} style={{ color: "white" }}>
+                            정보확인
                           </Button>
-                          </Link>
-                          </TableCell>
+                        </Link>
+                      </TableCell>
                     </TableRow>
                   );
                 })}
