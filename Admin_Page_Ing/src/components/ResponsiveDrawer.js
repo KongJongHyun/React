@@ -17,8 +17,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import {Link, useHistory} from 'react-router-dom';
-import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 // Icons 
 import PlaceIcon from '@material-ui/icons/Place';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
@@ -143,63 +143,63 @@ const ResponsiveDrawer = () => {
     setDropdown3(!dropdown3);
   };
 
-  useEffect(() => {    
-    if(count == 0) {
-    history.push('/home/restaurants')
-    }
-    else if(count == 1) {
-      history.push('/home/hotel')
-    }
-    else if(count == 2) {
-      history.push('/home/shopping')
-    }
-    else if(count == 3) {
-      history.push('/home/travel')
-    }
-    else if(count == 4) {
-      history.push('/home/perinfo')
-    }
-    else if(count == 5) {
-      history.push('/home/evbanner')
-    }
-    else if(count == 6) {
-      history.push('/home/minfo')
-    }
-    else if(count == 7) {
-      history.push('/home/statistics')
-    }
-    else if(count == 8) {
-      history.push('/home/memgrade')
-    }
-    else if(count == 9) {
+  useEffect(() => {
+    if (count == 0) {
       history.push('/home/restaurants')
     }
-    else if(count == 10) {
+    else if (count == 1) {
       history.push('/home/hotel')
     }
-    else if(count == 11) {
+    else if (count == 2) {
       history.push('/home/shopping')
     }
-    else if(count == 12) {
+    else if (count == 3) {
       history.push('/home/travel')
     }
-    else if(count == 13) {
+    else if (count == 4) {
       history.push('/home/perinfo')
     }
-    else if(count == 14) {
+    else if (count == 5) {
       history.push('/home/evbanner')
     }
-    else if(count == 15) {
+    else if (count == 6) {
       history.push('/home/minfo')
     }
-    else if(count == 16) {
+    else if (count == 7) {
+      history.push('/home/statistics')
+    }
+    else if (count == 8) {
+      history.push('/home/memgrade')
+    }
+    else if (count == 9) {
+      history.push('/home/restaurants')
+    }
+    else if (count == 10) {
+      history.push('/home/hotel')
+    }
+    else if (count == 11) {
+      history.push('/home/shopping')
+    }
+    else if (count == 12) {
+      history.push('/home/travel')
+    }
+    else if (count == 13) {
+      history.push('/home/perinfo')
+    }
+    else if (count == 14) {
+      history.push('/home/evbanner')
+    }
+    else if (count == 15) {
+      history.push('/home/minfo')
+    }
+    else if (count == 16) {
       history.push('/home/statistics')
     }
 
   }, [count])
 
   return (
-    <div className={classes.root}>      
+    <div className={classes.root}>
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -238,13 +238,13 @@ const ResponsiveDrawer = () => {
             {theme.direction === 'ltr' ? (
               <ChevronLeftIcon />
             ) : (
-              <ChevronRightIcon />
-            )}
+                <ChevronRightIcon />
+              )}
           </IconButton>
         </div>
         <List>
           <Fragment>
-            
+
             <ListItem button key="dropdown" onClick={handleClick}>
               <ListItemIcon>
                 <PlaceIcon />
@@ -254,23 +254,23 @@ const ResponsiveDrawer = () => {
             </ListItem>
             <Collapse in={dropdown} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-              {['식당&카페', '숙박', '쇼핑','관광'].map((text,index) => (  
-                // <Link to='/home/restaurants'></Link>      
-                <ListItem  className={classes.nested} button key={text} onClick={() => setCount(index % 16)}>
-                  <ListItemIcon>
-                {
-                  (function() {
-                    if(index === 0) return <RestaurantIcon />
-                    else if(index === 1) return <HotelIcon />
-                    else if(index === 2) return <AddShoppingCartIcon />
-                    else if(index === 3) return <CardTravelIcon />
-                  })()
-                }
-              </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItem>        
-                                         
-              ))}
+                {['식당&카페', '숙박', '쇼핑', '관광'].map((text, index) => (
+                  // <Link to='/home/restaurants'></Link>      
+                  <ListItem className={classes.nested} button key={text} onClick={() => setCount(index % 16)}>
+                    <ListItemIcon>
+                      {
+                        (function () {
+                          if (index === 0) return <RestaurantIcon />
+                          else if (index === 1) return <HotelIcon />
+                          else if (index === 2) return <AddShoppingCartIcon />
+                          else if (index === 3) return <CardTravelIcon />
+                        })()
+                      }
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItem>
+
+                ))}
               </List>
             </Collapse>
           </Fragment>
@@ -287,21 +287,21 @@ const ResponsiveDrawer = () => {
             </ListItem>
             <Collapse in={dropdown1} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-              {['사용자일반', '숙박', '쇼핑','관광'].map((text,index) => (
-                <ListItem  className={classes.nested} button key={text} onClick={() => setCount((index % 16)+4)}>
-                  <ListItemIcon>
-                {
-                  (function() {
-                    if(index+4 === 4) return <PersonIcon />
-                    else if(index+4 === 5) return <HotelIcon />
-                    else if(index+4 === 6) return <AddShoppingCartIcon />
-                    else if(index+4 === 7) return <CardTravelIcon />
-                  })()
-                }
-              </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItem>
-              ))}
+                {['사용자일반', '숙박', '쇼핑', '관광'].map((text, index) => (
+                  <ListItem className={classes.nested} button key={text} onClick={() => setCount((index % 16) + 4)}>
+                    <ListItemIcon>
+                      {
+                        (function () {
+                          if (index + 4 === 4) return <PersonIcon />
+                          else if (index + 4 === 5) return <HotelIcon />
+                          else if (index + 4 === 6) return <AddShoppingCartIcon />
+                          else if (index + 4 === 7) return <CardTravelIcon />
+                        })()
+                      }
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItem>
+                ))}
               </List>
             </Collapse>
           </Fragment>
@@ -318,21 +318,21 @@ const ResponsiveDrawer = () => {
             </ListItem>
             <Collapse in={dropdown2} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-              {['식당&카페', '숙박', '쇼핑','관광'].map((text,index) => (
-                <ListItem  className={classes.nested} button key={text} onClick={() => setCount((index % 16)+8)}>
-                  <ListItemIcon>
-                {
-                  (function() {
-                    if(index+8 === 8) return <RestaurantIcon />
-                    else if(index+8 === 9) return <HotelIcon />
-                    else if(index+8 === 10) return <AddShoppingCartIcon />
-                    else if(index+8 === 11) return <CardTravelIcon />
-                  })()
-                }
-              </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItem>
-              ))}
+                {['식당&카페', '숙박', '쇼핑', '관광'].map((text, index) => (
+                  <ListItem className={classes.nested} button key={text} onClick={() => setCount((index % 16) + 8)}>
+                    <ListItemIcon>
+                      {
+                        (function () {
+                          if (index + 8 === 8) return <RestaurantIcon />
+                          else if (index + 8 === 9) return <HotelIcon />
+                          else if (index + 8 === 10) return <AddShoppingCartIcon />
+                          else if (index + 8 === 11) return <CardTravelIcon />
+                        })()
+                      }
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItem>
+                ))}
               </List>
             </Collapse>
           </Fragment>
@@ -349,21 +349,21 @@ const ResponsiveDrawer = () => {
             </ListItem>
             <Collapse in={dropdown3} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-              {['식당&카페', '숙박', '쇼핑','관광'].map((text,index) => (
-                <ListItem  className={classes.nested} button key={text} onClick={() => setCount((index % 16)+12)}>
-                  <ListItemIcon>
-                {
-                  (function() {
-                    if(index+12 === 12) return <RestaurantIcon />
-                    else if(index+12 === 13) return <HotelIcon />
-                    else if(index+12 === 14) return <AddShoppingCartIcon />
-                    else if(index+12 === 15) return <CardTravelIcon />
-                  })()
-                }
-              </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItem>
-              ))}
+                {['식당&카페', '숙박', '쇼핑', '관광'].map((text, index) => (
+                  <ListItem className={classes.nested} button key={text} onClick={() => setCount((index % 16) + 12)}>
+                    <ListItemIcon>
+                      {
+                        (function () {
+                          if (index + 12 === 12) return <RestaurantIcon />
+                          else if (index + 12 === 13) return <HotelIcon />
+                          else if (index + 12 === 14) return <AddShoppingCartIcon />
+                          else if (index + 12 === 15) return <CardTravelIcon />
+                        })()
+                      }
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                  </ListItem>
+                ))}
               </List>
             </Collapse>
           </Fragment>
@@ -373,7 +373,7 @@ const ResponsiveDrawer = () => {
           <Fragment>
             <ListItem button key="dropdown" onClick={() => setCount(16)}>
               <ListItemIcon>
-              <NotificationImportantIcon />
+                <NotificationImportantIcon />
               </ListItemIcon>
               <ListItemText primary="공지사항" />
             </ListItem>

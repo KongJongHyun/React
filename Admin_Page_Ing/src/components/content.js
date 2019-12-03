@@ -11,14 +11,15 @@ import Shopping from '../Menu/Shopping';
 import Statistics from '../Menu/Statistics';
 import Travel from '../Menu/Travel';
 import Deepinfo from '../Menu/Info/Deepinfo';
+import DataClean from '../Menu/Info/Dataclean';
 
 const Content = ({ history }) => {
     return (
         <Fragment>
-            <ResponsiveDrawer  />
+            <ResponsiveDrawer />
             <div style={{ paddingLeft: "25%" }}>
                 <Switch>
-                    <Route exact path='/home/restaurants' component={Restaurants} />
+                    <Route exact path='/home/restaurants' component={DataClean} />
                     <Route exact path='/home/restaurants/:id' component={Deepinfo} />
                     <Route exact path='/home/hotel' component={Hotel} />
                     <Route exact path='/home/memgrade' component={Memgrade} />

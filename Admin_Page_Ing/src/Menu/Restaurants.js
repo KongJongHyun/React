@@ -15,9 +15,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
-import { Link, useHistory } from 'react-router-dom';
 import MenuItem from '@material-ui/core/MenuItem';
-import CheckBoxt from './Info/Checkbox';
+import Checkboxt from './Info/Checkboxt';
 import Menu from '@material-ui/core/Menu';
 
 
@@ -186,6 +185,15 @@ const StyledMenuItem = withStyles(theme => ({
         color: theme.palette.common.white,
       },
     },
+    '&:hover': {
+      backgroundColor: "rgba(0,0,0,0)",
+    },
+    '&button': {
+      rippleVisible: 0
+    },
+    '& .MuiTouchRipple-root': {
+      position: 'inherit'
+    }
   },
 }))(MenuItem);
 const SearchUsingStyles = makeStyles(theme => ({
@@ -241,18 +249,13 @@ const SearchUsingStyles = makeStyles(theme => ({
   },
 }))
 
-const EnhancedTableToolbar = props => {
+const EnhancedTableToolbar = ({ open, click }) => {
   const classes = useToolbarStyles();
   const search_classes = SearchUsingStyles();
-  const { numSelected } = props;
   const [set, setSet] = React.useState('');
-  const [open, setOpen] = React.useState(false);
 
   const handleChange = event => {
     setSet(event.target.value);
-  };
-  const handleOpen = () => {
-    setOpen(true);
   };
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -269,7 +272,7 @@ const EnhancedTableToolbar = props => {
     <Toolbar className={classes.root}>
       <>
         <Typography className={classes.title} variant="h6" id="tableTitle">
-          맛집 & 카페
+          데이터
         </Typography>
         <div className={search_classes.search}>
           <div className={search_classes.searchIcon}>
@@ -300,10 +303,8 @@ const EnhancedTableToolbar = props => {
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
-          <StyledMenuItem
-            focusRipple={false}
-          >
-            <CheckBoxt />
+          <StyledMenuItem>
+            <Checkboxt click={click} />
           </StyledMenuItem>
         </StyledMenu>
         <Tooltip title="Setting">
@@ -364,13 +365,12 @@ const useStyles = makeStyles(theme => ({
     borderBottom: 0
   },
 }));
-export default function Restaurants() {
+const Restaurants = ({ open, click }) => {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const history = useHistory();
 
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -423,7 +423,7 @@ export default function Restaurants() {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar click={click} numSelected={selected.length} />
         <div className={classes.tableWrapper}>
           <Button color="primary" className={classes.button}>
             연동 완료 #
@@ -432,7 +432,7 @@ export default function Restaurants() {
             연동 대기중 #
       </Button>
           <Button color="inherit" className={classes.button}>
-            가맹업체 심사중 #
+            심사중 #
       </Button>
           <Button color="inherit" className={classes.button}>
             퍼블리싱 #
@@ -471,38 +471,26 @@ export default function Restaurants() {
                       key={row.ctel}
                       selected={isItemSelected}
                     >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={isItemSelected}
-                          inputProps={{ 'aria-labelledby': labelId }}
-                        />
-                      </TableCell>
-                      <TableCell component="th" id={labelId} scope="row" padding="none">
-                        {row.date}
-                      </TableCell>
-                      <TableCell align="left">{row.cname}</TableCell>
-                      <TableCell align="left">{row.area}</TableCell>
-                      <TableCell align="left">{row.fkind}</TableCell>
-                      <TableCell align="left">{row.ctel}</TableCell>
-                      <TableCell align="left">{row.cing}</TableCell>
-                      <TableCell align="left">
-                        <Link
-                          to={{
-                            pathname: `${history.location.pathname}/` + `${row.cname}`,
-                            query: {
-                              name: row.cname,
-                              area: row.area,
-                              fkind: row.fkind,
-                              ctel: row.ctel,
-                              cing: row.cing,
-                            }
-                          }}
-                          style={{ textDecoration: 'none' }}>
-                          <Button variant="contained" color="secondary" className={classes.button} style={{ color: "white" }}>
-                            정보확인
-                          </Button>
-                        </Link>
-                      </TableCell>
+                      {open && (
+                        <>
+                          <TableCell padding="checkbox">
+                            <Checkbox
+                              checked={isItemSelected}
+                              inputProps={{ 'aria-labelledby': labelId }}
+                            />
+                          </TableCell>
+                          <TableCell component="th" id={labelId} scope="row" padding="none">
+                            {row.date}
+                          </TableCell>
+                          <TableCell align="left">{row.cname}</TableCell>
+                          <TableCell align="left">{row.area}</TableCell>
+                          <TableCell align="left">{row.fkind}</TableCell>
+                          <TableCell align="left">{row.ctel}</TableCell>
+                          <TableCell align="left">{row.cing}</TableCell>
+                          <TableCell align="left">{row.cinfo}</TableCell>
+
+                        </>
+                      )}
                     </TableRow>
                   );
                 })}
@@ -514,6 +502,7 @@ export default function Restaurants() {
                 </TableRow>
               )}
             </TableBody>
+
           </Table>
         </div>
         <TablePagination
@@ -536,3 +525,5 @@ export default function Restaurants() {
     </div>
   );
 }
+
+export default Restaurants;
