@@ -369,8 +369,11 @@ const Restaurants = () => {
   const createCheckbox = (label, key) => {
     return { label, key }
   };
-  const rows_f = [
+
+  const rows_f_a = [
     createCheckbox("전체선택하기", 'checkedA'),
+  ]
+  const rows_f = [
     createCheckbox("한식", 'checkedB'),
     createCheckbox("글로벌", 'checkedC'),
     createCheckbox("중식", 'checkedD'),
@@ -380,7 +383,7 @@ const Restaurants = () => {
     createCheckbox("패스트푸드", 'checkedH'),
     createCheckbox("분식", "checkedI"),
   ];
-  const rows_l = [
+  const rows_la = [
     createCheckbox("전체선택하기", "checkedJ")
   ]
   const rows_lw = [
@@ -397,9 +400,12 @@ const Restaurants = () => {
     createCheckbox("화정 문화의거리", "checkedQ"),
     createCheckbox("수역이마을", "checkedR")
   ]
-  const handleChange = (name, label) => event => {
+  const handleChange = name => event => {
     setState({ ...state, [name]: event.target.checked })
   };
+  // const AllhandleChange = () => {
+  //   setState({ ...state, state: true })
+  // }
   const isSelected = name => selected.indexOf(name) !== -1;
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
@@ -444,12 +450,24 @@ const Restaurants = () => {
                     <Typography variant="h6" style={{ fontWeight: "bold" }}>음식종류</Typography>
                     <FormGroup>
                       {
+                        rows_f_a.map((row, i) => {
+                          return (
+                            <FormControlLabel
+                              key={i}
+                              control={
+                                <Checkbox onChange={AllhandleChange} />
+                              } label={row.label}
+                            />);
+                        })}
+                    </FormGroup>
+                    <FormGroup>
+                      {
                         rows_f.map((row, i) => {
                           return (
                             <FormControlLabel
                               key={i}
                               control={
-                                <Checkbox onChange={handleChange(row.key, row.label)} />
+                                <Checkbox onChange={handleChange()} />
                               } label={row.label}
                             />);
                         })}
@@ -460,7 +478,7 @@ const Restaurants = () => {
                     <Typography variant="h6" style={{ fontWeight: "bold" }}>지역</Typography>
                     <FormGroup>
                       {
-                        rows_l.map((row, i) => {
+                        rows_la.map((row, i) => {
                           return (
                             <FormControlLabel
                               key={i}
