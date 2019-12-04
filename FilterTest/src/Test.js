@@ -6,7 +6,6 @@ const Test = () => {
 
     const handleClick = () => {
         setOpen(!open);
-        console.log(open);
     }
     return (
         <App open={open} click={handleClick} />

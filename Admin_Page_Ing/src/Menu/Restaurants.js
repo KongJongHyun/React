@@ -16,9 +16,9 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
-import Checkboxt from './Info/Checkboxt';
 import Menu from '@material-ui/core/Menu';
-
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 //Icons
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -157,6 +157,7 @@ const useToolbarStyles = makeStyles(theme => ({
     margin: theme.spacing(1),
   },
 }));
+
 const StyledMenu = withStyles({
   paper: {
     border: '1px solid #d3d4d5',
@@ -249,82 +250,6 @@ const SearchUsingStyles = makeStyles(theme => ({
   },
 }))
 
-const EnhancedTableToolbar = ({ open, click }) => {
-  const classes = useToolbarStyles();
-  const search_classes = SearchUsingStyles();
-  const [set, setSet] = React.useState('');
-
-  const handleChange = event => {
-    setSet(event.target.value);
-  };
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  return (
-
-    <Toolbar className={classes.root}>
-      <>
-        <Typography className={classes.title} variant="h6" id="tableTitle">
-          데이터
-        </Typography>
-        <div className={search_classes.search}>
-          <div className={search_classes.searchIcon}>
-            <SearchIcon />
-          </div>
-          <InputBase
-            placeholder="Search…"
-            classes={{
-              root: search_classes.inputRoot,
-              input: search_classes.inputInput,
-            }}
-            inputProps={{ 'aria-label': 'search' }}
-          />
-        </div>
-        <Tooltip title="Delete">
-          <IconButton onClick={handleChange}
-            aria-label="delete">
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-        <IconButton aria-label="Filter" onClick={handleClick}>
-          <FilterIcon />
-        </IconButton>
-        <StyledMenu
-          id="customized-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-        >
-          <StyledMenuItem>
-            <Checkboxt click={click} />
-          </StyledMenuItem>
-        </StyledMenu>
-        <Tooltip title="Setting">
-          <IconButton aria-label="Setting">
-            <SettingsIcon />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Add Place">
-          <IconButton aria-label="Add Place">
-            <AddIcon />
-          </IconButton>
-        </Tooltip>
-      </>
-    </Toolbar>
-  );
-};
-
-EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-};
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
@@ -365,13 +290,16 @@ const useStyles = makeStyles(theme => ({
     borderBottom: 0
   },
 }));
-const Restaurants = ({ open, click }) => {
+const Restaurants = () => {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-
+  const classes1 = useToolbarStyles();
+  const search_classes = SearchUsingStyles();
+  const [set, setSet] = React.useState('');
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (event, property) => {
@@ -379,7 +307,6 @@ const Restaurants = ({ open, click }) => {
     setOrder(isDesc ? 'asc' : 'desc');
     setOrderBy(property);
   };
-
   const handleSelectAllClick = event => {
     if (event.target.checked) {
       const newSelecteds = rows.map(n => n.ctel);
@@ -388,7 +315,6 @@ const Restaurants = ({ open, click }) => {
     }
     setSelected([]);
   };
-
   const handleClick = (event, name) => {
     const selectedIndex = selected.indexOf(name);
     let newSelected = [];
@@ -405,41 +331,207 @@ const Restaurants = ({ open, click }) => {
         selected.slice(selectedIndex + 1),
       );
     }
-
     setSelected(newSelected);
   };
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-
   const handleChangeRowsPerPage = event => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
+  const handleClick1 = event => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const [state, setState] = React.useState({
+    checkedA: false,
+    checkedB: false,
+    checkedC: false,
+    checkedD: false,
+    checkedE: false,
+    checkedF: false,
+    checkedG: false,
+    checkedH: false,
+    checkedI: false,
+    checkedJ: false,
+    checkedK: false,
+    checkedL: false,
+    checkedM: false,
+    checkedN: false,
+    checkedO: false,
+    checkedP: false,
+    checkedQ: false,
+    checkedR: false,
+  });
+  const createCheckbox = (label, key) => {
+    return { label, key }
+  };
+  const rows_f = [
+    createCheckbox("전체선택하기", 'checkedA'),
+    createCheckbox("한식", 'checkedB'),
+    createCheckbox("글로벌", 'checkedC'),
+    createCheckbox("중식", 'checkedD'),
+    createCheckbox("일식", 'checkedE'),
+    createCheckbox("양식", 'checkedF'),
+    createCheckbox("카페&디저트", 'checkedG'),
+    createCheckbox("패스트푸드", 'checkedH'),
+    createCheckbox("분식", "checkedI"),
+  ];
+  const rows_l = [
+    createCheckbox("전체선택하기", "checkedJ")
+  ]
+  const rows_lw = [
+    createCheckbox("라페스타-웨스턴돔", "checkedK"),
+    createCheckbox("애니골", "checkedL")
+  ]
+  const rows_le = [
+    createCheckbox("일산 가로수길", "checkedM"),
+    createCheckbox("대화동", "checkedN"),
+    createCheckbox("원마운트", "checkedO"),
+    createCheckbox("킨텍스&맛고을", "checkedP")
+  ]
+  const rows_ld = [
+    createCheckbox("화정 문화의거리", "checkedQ"),
+    createCheckbox("수역이마을", "checkedR")
+  ]
+  const handleChange = (name, label) => event => {
+    setState({ ...state, [name]: event.target.checked })
+  };
   const isSelected = name => selected.indexOf(name) !== -1;
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar click={click} numSelected={selected.length} />
+        <Toolbar className={classes1.root}>
+          <>
+            <Typography className={classes1.title} variant="h6" id="tableTitle">
+              데이터
+        </Typography>
+            <div className={search_classes.search}>
+              <div className={search_classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="Search…"
+                classes={{
+                  root: search_classes.inputRoot,
+                  input: search_classes.inputInput
+                }}
+                inputProps={{ 'aria-label': 'search' }} />
+            </div>
+            <Tooltip title="Delete">
+              <IconButton
+                aria-label="delete">
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
+            <IconButton aria-label="Filter" onClick={handleClick1}>
+              <FilterIcon />
+            </IconButton>
+            <StyledMenu
+              id="customized-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}>
+              <StyledMenuItem>
+                <FormGroup row>
+                  <div>
+                    <Typography variant="h6" style={{ fontWeight: "bold" }}>음식종류</Typography>
+                    <FormGroup>
+                      {
+                        rows_f.map((row, i) => {
+                          return (
+                            <FormControlLabel
+                              key={i}
+                              control={
+                                <Checkbox onChange={handleChange(row.key, row.label)} />
+                              } label={row.label}
+                            />);
+                        })}
+                    </FormGroup>
+                  </div>
+                  <hr style={{ border: "0.5 solid grey", marginRight: "14px" }} />
+                  <div>
+                    <Typography variant="h6" style={{ fontWeight: "bold" }}>지역</Typography>
+                    <FormGroup>
+                      {
+                        rows_l.map((row, i) => {
+                          return (
+                            <FormControlLabel
+                              key={i}
+                              control={
+                                <Checkbox onChange={handleChange(row.key)} />
+                              } label={row.label}
+                            />);
+                        })}
+                    </FormGroup>
+                    <Typography variant="subtitle2" style={{ fontWeight: "bold", color: "grey" }}>일산서구</Typography>
+                    <FormGroup>
+                      {
+                        rows_lw.map((row, i) => {
+                          return (
+                            <FormControlLabel
+                              key={i}
+                              control={
+                                <Checkbox onChange={handleChange(row.key)} />
+                              } label={row.label}
+                            />);
+                        })}
+                    </FormGroup>
+                    <Typography variant="subtitle2" style={{ fontWeight: "bold", color: "grey" }}>일산동구</Typography>
+                    <FormGroup>
+                      {
+                        rows_le.map((row, i) => {
+                          return (
+                            <FormControlLabel
+                              key={i}
+                              control={
+                                <Checkbox onChange={handleChange(row.key)} />
+                              } label={row.label}
+                            />);
+                        })}
+                    </FormGroup>
+                    <Typography variant="subtitle2" style={{ fontWeight: "bold", color: "grey" }}>덕양구</Typography>
+                    <FormGroup>
+                      {
+                        rows_ld.map((row, i) => {
+                          return (
+                            <FormControlLabel
+                              key={i}
+                              control={
+                                <Checkbox onChange={handleChange(row.key)} />
+                              } label={row.label}
+                            />);
+                        })}
+                    </FormGroup>
+                  </div>
+                </FormGroup>
+                );
+          </StyledMenuItem>
+            </StyledMenu>
+            <Tooltip title="Setting">
+              <IconButton aria-label="Setting">
+                <SettingsIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Add Place">
+              <IconButton aria-label="Add Place">
+                <AddIcon />
+              </IconButton>
+            </Tooltip>
+          </>
+        </Toolbar>
         <div className={classes.tableWrapper}>
-          <Button color="primary" className={classes.button}>
-            연동 완료 #
-      </Button>
-          <Button color="secondary" className={classes.button}>
-            연동 대기중 #
-      </Button>
-          <Button color="inherit" className={classes.button}>
-            심사중 #
-      </Button>
-          <Button color="inherit" className={classes.button}>
-            퍼블리싱 #
-      </Button>
-          <Button color="inherit" className={classes.button}>
-            편집중 #
-      </Button>
+          <Button color="primary" className={classes.button}>연동 완료 #</Button>
+          <Button color="secondary" className={classes.button}>연동 대기중 #</Button>
+          <Button color="inherit" className={classes.button}>심사중 #</Button>
+          <Button color="inherit" className={classes.button}>퍼블리싱 #</Button>
+          <Button color="inherit" className={classes.button}>편집중 #</Button>
           <Table
             className={classes.table}
             aria-labelledby="tableTitle"
@@ -454,7 +546,6 @@ const Restaurants = ({ open, click }) => {
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
             />
-
             <TableBody>
               {stableSort(rows, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -471,13 +562,14 @@ const Restaurants = ({ open, click }) => {
                       key={row.ctel}
                       selected={isItemSelected}
                     >
-                      {open && (
+                      {state.checkedA && (
                         <>
                           <TableCell padding="checkbox">
                             <Checkbox
                               checked={isItemSelected}
                               inputProps={{ 'aria-labelledby': labelId }}
                             />
+                            {}
                           </TableCell>
                           <TableCell component="th" id={labelId} scope="row" padding="none">
                             {row.date}
@@ -488,7 +580,6 @@ const Restaurants = ({ open, click }) => {
                           <TableCell align="left">{row.ctel}</TableCell>
                           <TableCell align="left">{row.cing}</TableCell>
                           <TableCell align="left">{row.cinfo}</TableCell>
-
                         </>
                       )}
                     </TableRow>
@@ -525,5 +616,4 @@ const Restaurants = ({ open, click }) => {
     </div>
   );
 }
-
 export default Restaurants;

@@ -185,6 +185,15 @@ const StyledMenuItem = withStyles(theme => ({
                 color: theme.palette.common.white,
             },
         },
+        '&:hover': {
+            backgroundColor: "rgba(0,0,0,0)",
+        },
+        '&button': {
+            rippleVisible: 0
+        },
+        '& .MuiTouchRipple-root': {
+            position: 'inherit'
+        }
     },
 }))(MenuItem);
 const SearchUsingStyles = makeStyles(theme => ({
@@ -263,7 +272,7 @@ const EnhancedTableToolbar = ({ open, click }) => {
         <Toolbar className={classes.root}>
             <>
                 <Typography className={classes.title} variant="h6" id="tableTitle">
-                    맛집 & 카페
+                    데이터
         </Typography>
                 <div className={search_classes.search}>
                     <div className={search_classes.searchIcon}>
@@ -294,9 +303,7 @@ const EnhancedTableToolbar = ({ open, click }) => {
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
                 >
-                    <StyledMenuItem
-                        focusRipple={false}
-                    >
+                    <StyledMenuItem>
                         <Count click={click} />
                     </StyledMenuItem>
                 </StyledMenu>
@@ -425,7 +432,7 @@ const App = ({ open, click }) => {
                         연동 대기중 #
       </Button>
                     <Button color="inherit" className={classes.button}>
-                        가맹업체 심사중 #
+                        심사중 #
       </Button>
                     <Button color="inherit" className={classes.button}>
                         퍼블리싱 #
@@ -447,51 +454,55 @@ const App = ({ open, click }) => {
                             onRequestSort={handleRequestSort}
                             rowCount={rows.length}
                         />
-                        {open && (
-                            <TableBody>
-                                {stableSort(rows, getSorting(order, orderBy))
-                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    .map((row, index) => {
-                                        const isItemSelected = isSelected(row.ctel);
-                                        const labelId = `enhanced-table-checkbox-${index}`;
-                                        return (
-                                            <TableRow
-                                                hover
-                                                onClick={event => handleClick(event, row.ctel)}
-                                                role="checkbox"
-                                                aria-checked={isItemSelected}
-                                                tabIndex={-1}
-                                                key={row.ctel}
-                                                selected={isItemSelected}
-                                            >
-                                                <TableCell padding="checkbox">
-                                                    <Checkbox
-                                                        checked={isItemSelected}
-                                                        inputProps={{ 'aria-labelledby': labelId }}
-                                                    />
-                                                </TableCell>
-                                                <TableCell component="th" id={labelId} scope="row" padding="none">
-                                                    {row.date}
-                                                </TableCell>
-                                                <TableCell align="left">{row.cname}</TableCell>
-                                                <TableCell align="left">{row.area}</TableCell>
-                                                <TableCell align="left">{row.fkind}</TableCell>
-                                                <TableCell align="left">{row.ctel}</TableCell>
-                                                <TableCell align="left">{row.cing}</TableCell>
-                                                <TableCell align="left">
-                                                </TableCell>
-                                            </TableRow>
-                                        );
-                                    })}
-                                {emptyRows > 0 && (
-                                    <TableRow>
-                                        <TableCell colSpan={6} classes={{
-                                            root: classes.delete
-                                        }} />
-                                    </TableRow>
-                                )}
-                            </TableBody>
-                        )}
+
+                        <TableBody>
+                            {stableSort(rows, getSorting(order, orderBy))
+                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                .map((row, index) => {
+                                    const isItemSelected = isSelected(row.ctel);
+                                    const labelId = `enhanced-table-checkbox-${index}`;
+                                    return (
+                                        <TableRow
+                                            hover
+                                            onClick={event => handleClick(event, row.ctel)}
+                                            role="checkbox"
+                                            aria-checked={isItemSelected}
+                                            tabIndex={-1}
+                                            key={row.ctel}
+                                            selected={isItemSelected}
+                                        >
+                                            {open && (
+                                                <>
+                                                    <TableCell padding="checkbox">
+                                                        <Checkbox
+                                                            checked={isItemSelected}
+                                                            inputProps={{ 'aria-labelledby': labelId }}
+                                                        />
+                                                    </TableCell>
+                                                    <TableCell component="th" id={labelId} scope="row" padding="none">
+                                                        {row.date}
+                                                    </TableCell>
+                                                    <TableCell align="left">{row.cname}</TableCell>
+                                                    <TableCell align="left">{row.area}</TableCell>
+                                                    <TableCell align="left">{row.fkind}</TableCell>
+                                                    <TableCell align="left">{row.ctel}</TableCell>
+                                                    <TableCell align="left">{row.cing}</TableCell>
+                                                    <TableCell align="left">{row.cinfo}</TableCell>
+
+                                                </>
+                                            )}
+                                        </TableRow>
+                                    );
+                                })}
+                            {emptyRows > 0 && (
+                                <TableRow>
+                                    <TableCell colSpan={6} classes={{
+                                        root: classes.delete
+                                    }} />
+                                </TableRow>
+                            )}
+                        </TableBody>
+
                     </Table>
                 </div>
                 <TablePagination
