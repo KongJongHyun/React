@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import { fade, lighten, makeStyles } from '@material-ui/core/styles';
+import { fade, lighten, makeStyles, withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -16,30 +15,34 @@ import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { Link, useHistory } from 'react-router-dom';
 
 //Icons
 import DeleteIcon from '@material-ui/icons/Delete';
 import SearchIcon from '@material-ui/icons/Search';
 import SettingsIcon from '@material-ui/icons/Settings';
 import AddIcon from '@material-ui/icons/Add';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-
-// Filter Button
-import MenuItem from '@material-ui/core/MenuItem';
+import FilterIcon from '@material-ui/icons/FilterList'
 
 // Search
 import InputBase from '@material-ui/core/InputBase';
-import Select from '@material-ui/core/Select';
-import FormControl from '@material-ui/core/FormControl';
-
-function createData(date, cname, area, fkind, ctel, cing) {
-  return { date, cname, area, fkind, ctel, cing };
+function createData(date, cname, area, fkind, ctel, cing, cinfo) {
+  return { date, cname, area, fkind, ctel, cing, cinfo };
 }
 
 const rows = [
-  createData("2019.11.18","test","일산동구","민속촌","031-1234-5678","연동 완료"),
-  createData("2019.11.18","test1","일산서구","미술관","031-2345-6789", "연동 대기중"),
-  createData("2019.11.19","test2","행신동","호수공원","032-3456-7890", "연동 대기중")
+  createData("2019.11.18", "test", "장항동", "호수공원", "031-1234-5678", "연동 완료"),
+  createData("2019.11.18", "test1", "대화동", "현대모터스튜디오", "041-2345-6789", "연동 대기중"),
+  createData("2019.11.18", "test", "마두동", "아람미술관", "051-1234-5678", "연동 완료"),
+  createData("2019.11.18", "test1", "대화동", "고양종합운동장", "061-2345-6789", "연동 대기중"),
+  createData("2019.11.18", "test", "원당동", "원당종마목장", "032-1234-5678", "연동 완료"),
+  createData("2019.11.18", "test1", "덕이동", "선인장연구소", "042-2345-6789", "연동 대기중"),
+  createData("2019.11.18", "test", "행주내동", "행주산성", "052-1234-5678", "연동 완료"),
+  createData("2019.11.18", "test1", "원당동", "고양 서삼릉", "062-2345-6789", "연동 대기중")
 ];
 
 function desc(a, b, orderBy) {
@@ -67,12 +70,13 @@ function getSorting(order, orderBy) {
 }
 
 const headCells = [
-  { id: 'date', numeric: false, disablePadding: true, label: '가입일' },
-  { id: 'cname', numeric: false, disablePadding: false, label: '업체 이름' },
+  { id: 'date', numeric: false, disablePadding: true, label: '등록일' },
+  { id: 'cname', numeric: false, disablePadding: true, label: '업체 이름' },
   { id: 'area', numeric: false, disablePadding: false, label: '지역' },
-  { id: 'fkind', numeric: false, disablePadding: false, label: '관광 종류' },
+  { id: 'fkind', numeric: false, disablePadding: true, label: '관광 형태' },
   { id: 'ctel', numeric: false, disablePadding: false, label: '업체 전화번호' },
   { id: 'cing', numeric: false, disablePadding: false, label: '연동 상태' },
+  { id: 'cinfo', numeric: false, disablePadding: false, label: '상세 정보' },
 ];
 
 function EnhancedTableHead(props) {
@@ -80,41 +84,43 @@ function EnhancedTableHead(props) {
   const createSortHandler = property => event => {
     onRequestSort(event, property);
   };
-
   return (
-    <TableHead style={{backgroundColor:"lightgrey"}}>
-      <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{ 'aria-label': 'select all data' }}
-          />
-        </TableCell>
-        {headCells.map(headCell => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'default'}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={order}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <span className={classes.visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </span>
-              ) : null}
-            </TableSortLabel>
+    <>
+      <TableHead style={{ backgroundColor: "lightgrey" }}>
+        <TableRow>
+          <TableCell padding="checkbox">
+            <Checkbox
+              indeterminate={numSelected > 0 && numSelected < rowCount}
+              checked={numSelected === rowCount}
+              onChange={onSelectAllClick}
+              inputProps={{ 'aria-label': 'select all data' }}
+            />
           </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
+          {headCells.map(headCell => (
+
+            <TableCell
+              key={headCell.id}
+              align={headCell.numeric ? 'right' : 'left'}
+              padding={headCell.disablePadding ? 'none' : 'default'}
+              sortDirection={orderBy === headCell.id ? order : false}
+            >
+              <TableSortLabel
+                active={orderBy === headCell.id}
+                direction={order}
+                onClick={createSortHandler(headCell.id)}
+              >
+                {headCell.label}
+                {orderBy === headCell.id ? (
+                  <span className={classes.visuallyHidden}>
+                    {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                  </span>
+                ) : null}
+              </TableSortLabel>
+            </TableCell>
+          ))}
+        </TableRow>
+      </TableHead>
+    </>
   );
 }
 
@@ -136,13 +142,13 @@ const useToolbarStyles = makeStyles(theme => ({
   highlight:
     theme.palette.type === 'light'
       ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-        }
+        color: theme.palette.secondary.main,
+        backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+      }
       : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
-        },
+        color: theme.palette.text.primary,
+        backgroundColor: theme.palette.secondary.dark,
+      },
   title: {
     flex: '1 1 100%',
     fontWeight: "bold"
@@ -156,13 +162,51 @@ const useToolbarStyles = makeStyles(theme => ({
   },
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 150,
   },
 }));
 
+const StyledMenu = withStyles({
+  paper: {
+    border: '1px solid #d3d4d5',
+  },
+})(props => (
+  <Menu
+    elevation={0}
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'center',
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'center',
+    }}
+    {...props}
+  />
+));
+
+const StyledMenuItem = withStyles(theme => ({
+  root: {
+    '&:focus': {
+      backgroundColor: theme.palette.main,
+      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+        color: theme.palette.common.white,
+      },
+    },
+    '&:hover': {
+      backgroundColor: "rgba(0,0,0,0)",
+    },
+    '&button': {
+      rippleVisible: 0
+    },
+    '& .MuiTouchRipple-root': {
+      position: 'inherit'
+    }
+  },
+}))(MenuItem);
 const SearchUsingStyles = makeStyles(theme => ({
   root: {
-    flexGrow:1,
+    flexGrow: 1,
   },
   menuButton: {
     marginRight: theme.spacing(2)
@@ -171,7 +215,7 @@ const SearchUsingStyles = makeStyles(theme => ({
     floxGrow: 1,
     display: 'none',
     [theme.breakpoints.up('sm')]: {
-      display:'block',
+      display: 'block',
     },
   },
   search: {
@@ -213,99 +257,6 @@ const SearchUsingStyles = makeStyles(theme => ({
   },
 }))
 
-const EnhancedTableToolbar = props => {
-  const classes = useToolbarStyles();
-  const search_classes = SearchUsingStyles();
-  const { numSelected } = props;
-  const [set, setSet] = React.useState('');
-  const [open, setOpen] = React.useState(false);
-  const handleChange = event => {
-    setSet(event.target.value);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const handleOpen = () => {
-    setOpen(true);
-  }
-  return (
-    <Toolbar
-      className={clsx(classes.root, {
-        [classes.highlight]: numSelected > 0,
-      })}
-    >
-      {numSelected > 0 ? (
-        <Typography className={classes.title} color="inherit" variant="subtitle1">
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography className={classes.title} variant="h6" id="tableTitle">
-          관광시설
-        </Typography>
-      )}
-          <div className={search_classes.search}>
-            <div className={search_classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: search_classes.inputRoot,
-                input: search_classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </div>
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton aria-label="delete">
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <>
-        <FormControl className={classes.formControl}>
-            <Select
-            IconComponent={() => (
-              <ArrowDropDownIcon />
-            )}
-              labelId="filter-button"
-              id="filter-button"
-              open={open}
-              onClose={handleClose}
-              onOpen={handleOpen}
-              value={set}
-              onChange={handleChange} 
-              >
-                <MenuItem value=""><em>None</em></MenuItem>
-                <MenuItem value="date">가입일</MenuItem>
-                <MenuItem value="cname">업체 이름</MenuItem>
-                <MenuItem value="area">지역</MenuItem>
-                <MenuItem value="fkind">관광 종류</MenuItem>
-                <MenuItem value="ctel">업체 전화번호</MenuItem>
-                <MenuItem value="cing">연동 상태</MenuItem>
-             </Select>
-         </FormControl>
-        </>
-      )}
-      <Tooltip title="Setting">
-        <IconButton aria-label="Setting">
-          <SettingsIcon />
-          </IconButton>
-      </Tooltip>
-      <Tooltip title="Add Place">
-        <IconButton aria-label="Add Place">
-          <AddIcon />
-          </IconButton>
-      </Tooltip>
-    </Toolbar>
-  );
-};
-
-EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-};
-
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
@@ -342,23 +293,28 @@ const useStyles = makeStyles(theme => ({
   fab: {
     margin: theme.spacing(1),
   },
+  delete: {
+    borderBottom: 0
+  },
 }));
-
-export default function CInfo() {
+const Restaurants = () => {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-
+  const classes1 = useToolbarStyles();
+  const search_classes = SearchUsingStyles();
+  const [set, setSet] = React.useState('');
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const history = useHistory();
 
   const handleRequestSort = (event, property) => {
     const isDesc = orderBy === property && order === 'desc';
     setOrder(isDesc ? 'asc' : 'desc');
     setOrderBy(property);
   };
-
   const handleSelectAllClick = event => {
     if (event.target.checked) {
       const newSelecteds = rows.map(n => n.ctel);
@@ -367,7 +323,6 @@ export default function CInfo() {
     }
     setSelected([]);
   };
-
   const handleClick = (event, name) => {
     const selectedIndex = selected.indexOf(name);
     let newSelected = [];
@@ -384,50 +339,266 @@ export default function CInfo() {
         selected.slice(selectedIndex + 1),
       );
     }
-
     setSelected(newSelected);
   };
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-
   const handleChangeRowsPerPage = event => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+  const handleClick1 = event => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
+
+  const [state, setState] = React.useState({
+    data: [
+      { "label": "전체선택하기", "checked": false },
+      { "label": "호수공원", "checked": false },
+      { "label": "현대모터스튜디오", "checked": false },
+      { "label": "아람미술관", "checked": false },
+      { "label": "고양종합운동장", "checked": false },
+      { "label": "원당종마목장", "checked": false },
+      { "label": "선인장연구소", "checked": false },
+      { "label": "행주산성", "checked": false },
+      { "label": "고양 서삼릉", "checked": false },
+    ],
+    la: [
+      { "label": "전체선택하기", "checked": false },
+    ],
+    lw: [
+      { "label": "대화동", "checked": false },
+      { "label": "덕이동", "checked": false },
+    ],
+    le: [
+      { "label": "마두동", "checked": false },
+      { "label": "장항동", "checked": false },
+    ],
+    ld: [
+      { "label": "원당동", "checked": false },
+      { "label": "행주내동", "checked": false },
+    ]
+  });
+  const handleChange = (idx, gubun) => {
+    setState(prevState => {
+      let state1 = prevState;
+      let state2 = state1;
+      let checkTest = null;
+      switch (gubun) {
+        case "data":
+          checkTest = !state1.data[0].checked;
+          if (idx === 0) {
+            state2.data.map((val, i) => {
+              state1 = Object.assign(state2.data[i], {
+                'checked': checkTest
+              });
+            })
+          } else {
+            state1 = Object.assign(state1.data[idx], {
+              checked: !state1.data[idx].checked
+            });
+          }
+          break;
+        case "la":
+          checkTest = !state1.la[0].checked;
+          if (idx === 0) {
+            state2.la.map((val, i) => {
+              state1 = Object.assign(state2.la[i], {
+                'checked': checkTest
+              });
+            })
+            state2.lw.map((val, i) => {
+              state1 = Object.assign(state2.lw[i], {
+                'checked': checkTest
+              });
+            })
+            state2.le.map((val, i) => {
+              state1 = Object.assign(state2.le[i], {
+                'checked': checkTest
+              });
+            })
+            state2.ld.map((val, i) => {
+              state1 = Object.assign(state2.ld[i], {
+                'checked': checkTest
+              });
+            })
+          } else {
+            state1 = Object.assign(state1.la[idx], {
+              checked: !state1.la[idx].checked
+            });
+          }
+          break;
+        case "lw":
+          checkTest = !state1.lw[0].checked;
+          state1 = Object.assign(state1.lw[idx], {
+            checked: !state1.lw[idx].checked
+          });
+          break;
+        case "le":
+          checkTest = !state1.le[0].checked;
+          state1 = Object.assign(state1.le[idx], {
+            checked: !state1.le[idx].checked
+          });
+          break;
+        case "ld":
+          checkTest = !state1.ld[0].checked;
+          state1 = Object.assign(state1.ld[idx], {
+            checked: !state1.ld[idx].checked
+          });
+          break;
+      }
+      return { ...prevState, state1 };
+    });
+  };
 
   const isSelected = name => selected.indexOf(name) !== -1;
-
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <Toolbar className={classes1.root}>
+          <>
+            <Typography className={classes1.title} variant="h6" id="tableTitle">
+              데이터
+        </Typography>
+            <div className={search_classes.search}>
+              <div className={search_classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="Search…"
+                classes={{
+                  root: search_classes.inputRoot,
+                  input: search_classes.inputInput
+                }}
+                inputProps={{ 'aria-label': 'search' }} />
+            </div>
+            <Tooltip title="Delete">
+              <IconButton
+                aria-label="delete">
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
+            <IconButton aria-label="Filter" onClick={handleClick1}>
+              <FilterIcon />
+            </IconButton>
+            <StyledMenu
+              id="customized-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}>
+              <StyledMenuItem>
+                <FormGroup row>
+                  <div>
+                    <Typography variant="h6" style={{ fontWeight: "bold" }}>관광 형태</Typography>
+                    <FormGroup>
+                      {
+                        state.data.map((row, i) => {
+                          return (
+                            <FormControlLabel
+                              key={`check-${i}`}
+                              control={
+                                <Checkbox checked={row.checked} onChange={() => handleChange(i, 'data')} />
+                              } label={row.label}
+                            />);
+                        })
+                      }
+                    </FormGroup>
+                  </div>
+                  <hr style={{ border: "0.5 solid grey", marginRight: "14px" }} />
+                  <div>
+                    <Typography variant="h6" style={{ fontWeight: "bold" }}>지역</Typography>
+                    <FormGroup>
+                      {
+                        state.la.map((row, i) => {
+                          return (
+                            <FormControlLabel
+                              key={`check-${i}`}
+                              control={
+                                <Checkbox checked={row.checked} onChange={() => handleChange(i, 'la')} />
+                              } label={row.label}
+                            />);
+                        })
+                      }
+                    </FormGroup>
+                    <Typography variant="subtitle2" style={{ fontWeight: "bold", color: "grey" }}>일산서구</Typography>
+                    <FormGroup>
+                      {
+                        state.lw.map((row, i) => {
+                          return (
+                            <FormControlLabel
+                              key={`check-${i}`}
+                              control={
+                                <Checkbox checked={row.checked} onChange={() => handleChange(i, 'lw')} />
+                              } label={row.label}
+                            />);
+                        })
+                      }
+                    </FormGroup>
+                    <Typography variant="subtitle2" style={{ fontWeight: "bold", color: "grey" }}>일산동구</Typography>
+                    <FormGroup>
+                      {
+                        state.le.map((row, i) => {
+                          return (
+                            <FormControlLabel
+                              key={`check-${i}`}
+                              control={
+                                <Checkbox checked={row.checked} onChange={() => handleChange(i, 'le')} />
+                              } label={row.label}
+                            />);
+                        })
+                      }
+                    </FormGroup>
+                    <Typography variant="subtitle2" style={{ fontWeight: "bold", color: "grey" }}>덕양구</Typography>
+                    <FormGroup>
+                      {
+                        state.ld.map((row, i) => {
+                          return (
+                            <FormControlLabel
+                              key={`check-${i}`}
+                              control={
+                                <Checkbox checked={row.checked} onChange={() => handleChange(i, 'ld')} />
+                              } label={row.label}
+                            />);
+                        })
+                      }
+                    </FormGroup>
+                  </div>
+                </FormGroup>
+              </StyledMenuItem>
+            </StyledMenu>
+            <Tooltip title="Setting">
+              <IconButton aria-label="Setting">
+                <SettingsIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Add Place">
+              <IconButton aria-label="Add Place">
+                <AddIcon />
+              </IconButton>
+            </Tooltip>
+          </>
+        </Toolbar>
         <div className={classes.tableWrapper}>
-      <Button color="primary" className={classes.button}>
-        연동 완료 #
-      </Button>
-      <Button color="secondary" className={classes.button}>
-        연동 대기중 #
-      </Button>
-      <Button color="inherit" className={classes.button}>
-        가맹업체 심사중 #
-      </Button>
-      <Button color="inherit" className={classes.button}>
-        퍼블리싱 #
-      </Button>
-      <Button color="inherit" className={classes.button}>
-        편집중 #
-      </Button>
+          <div style={{ display: "flex" }}>
+            <Typography variable="button" color="primary" style={{ padding: "15px", fontWeight: "bold", fontSize: "15px" }}>연동 완료 #</Typography>
+            <Typography variable="button" color="secondary" style={{ padding: "15px", fontWeight: "bold", fontSize: "15px" }}>연동 대기중 #</Typography>
+            <Typography variable="button" color="inherit" style={{ padding: "15px", fontWeight: "bold", fontSize: "15px" }}>심사중 #</Typography>
+            <Typography variable="button" color="inherit" style={{ padding: "15px", fontWeight: "bold", fontSize: "15px" }}>퍼블리싱 #</Typography>
+            <Typography variable="button" color="inherit" style={{ padding: "15px", fontWeight: "bold", fontSize: "15px" }}>편집중 #</Typography>
+          </div>
           <Table
             className={classes.table}
             aria-labelledby="tableTitle"
             aria-label="enhanced table"
           >
-            
             <EnhancedTableHead
               classes={classes}
               numSelected={selected.length}
@@ -437,14 +608,12 @@ export default function CInfo() {
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
             />
-            
             <TableBody>
               {stableSort(rows, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.ctel);
                   const labelId = `enhanced-table-checkbox-${index}`;
-
                   return (
                     <TableRow
                       hover
@@ -455,29 +624,61 @@ export default function CInfo() {
                       key={row.ctel}
                       selected={isItemSelected}
                     >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={isItemSelected}
-                          inputProps={{ 'aria-labelledby': labelId }}
-                        />
-                      </TableCell>
-                      <TableCell component="th" id={labelId} scope="row" padding="none">
-                        {row.date}
-                      </TableCell>
-                      <TableCell align="left">{row.cname}</TableCell>
-                      <TableCell align="left">{row.area}</TableCell>
-                      <TableCell align="left">{row.fkind}</TableCell>
-                      <TableCell align="left">{row.ctel}</TableCell>
-                      <TableCell align="left">{row.cing}</TableCell>
+                      {state.data.map((rowd, i) => {
+                        if (rowd.checked == true) {
+                          if (row.fkind == rowd.label) {
+                            return (
+                              <Fragment key={`table_select-${i}`}>
+                                <TableCell padding="checkbox">
+                                  <Checkbox
+                                    checked={isItemSelected}
+                                    inputProps={{ 'aria-labelledby': labelId }}
+                                  />
+                                </TableCell>
+                                <TableCell component="th" id={labelId} scope="row" padding="none">
+                                  {row.date}
+                                </TableCell>
+                                <TableCell align="left">{row.cname}</TableCell>
+                                <TableCell align="left">{row.area}</TableCell>
+                                <TableCell align="left">{row.fkind}</TableCell>
+                                <TableCell align="left">{row.ctel}</TableCell>
+                                <TableCell align="left">{row.cing}</TableCell>
+                                <TableCell align="left">
+                                  <Link
+                                    to={{
+                                      pathname: `${history.location.pathname}/` + `${row.cname}`,
+                                      query: {
+                                        name: row.cname,
+                                        area: row.area,
+                                        fkind: row.fkind,
+                                        ctel: row.ctel,
+                                        cing: row.cing,
+                                      }
+                                    }}
+                                    style={{ textDecoration: 'none' }}>
+                                    <Button variant="contained" color="secondary" className={classes.button} style={{ color: "white" }}>
+                                      정보확인
+                              </Button>
+                                  </Link>
+                                </TableCell>
+                              </Fragment>
+                            )
+                          }
+                        }
+                      }
+                      )}
                     </TableRow>
                   );
                 })}
               {emptyRows > 0 && (
                 <TableRow>
-                  <TableCell colSpan={6} />
+                  <TableCell colSpan={6} classes={{
+                    root: classes.delete
+                  }} />
                 </TableRow>
               )}
             </TableBody>
+
           </Table>
         </div>
         <TablePagination
@@ -486,6 +687,7 @@ export default function CInfo() {
           count={rows.length}
           rowsPerPage={rowsPerPage}
           page={page}
+          labelRowsPerPage="페이지 당 출력 개수"
           backIconButtonProps={{
             'aria-label': 'previous page',
           }}
@@ -495,7 +697,8 @@ export default function CInfo() {
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
-      </Paper>
-    </div>
+      </Paper >
+    </div >
   );
 }
+export default Restaurants;
