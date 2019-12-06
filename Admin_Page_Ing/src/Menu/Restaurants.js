@@ -35,14 +35,14 @@ function createData(date, cname, area, fkind, ctel, cing, cinfo) {
 }
 
 const rows = [
-  createData("2019.11.18", "test", "일산동구", "한식", "031-1234-5678", "연동 완료"),
-  createData("2019.11.18", "test1", "일산서구", "글로벌", "041-2345-6789", "연동 대기중"),
-  createData("2019.11.18", "test", "일산동구", "중식", "051-1234-5678", "연동 완료"),
-  createData("2019.11.18", "test1", "일산서구", "일식", "061-2345-6789", "연동 대기중"),
-  createData("2019.11.18", "test", "일산동구", "양식", "032-1234-5678", "연동 완료"),
-  createData("2019.11.18", "test1", "일산 가로수길", "카페&디저트", "042-2345-6789", "연동 대기중"),
-  createData("2019.11.18", "test", "덕양구", "패스트푸드", "052-1234-5678", "연동 완료"),
-  createData("2019.11.18", "test1", "일산서구", "분식", "062-2345-6789", "연동 대기중")
+  createData("2019.11.18", "test", "라페스타-웨스턴돔", "한식", "031-1234-5678", "연동 완료"),
+  createData("2019.11.18", "test1", "애니골", "글로벌", "041-2345-6789", "연동 대기중"),
+  createData("2019.11.18", "test", "가로수길", "중식", "051-1234-5678", "연동 완료"),
+  createData("2019.11.18", "test1", "대화동", "일식", "061-2345-6789", "연동 대기중"),
+  createData("2019.11.18", "test", "원마운트", "양식", "032-1234-5678", "연동 완료"),
+  createData("2019.11.18", "test1", "킨텍스&맛고을", "카페&디저트", "042-2345-6789", "연동 대기중"),
+  createData("2019.11.18", "test", "화정 문화의거리", "패스트푸드", "052-1234-5678", "연동 완료"),
+  createData("2019.11.18", "test1", "수역이마을", "분식", "062-2345-6789", "연동 대기중")
 ];
 
 function desc(a, b, orderBy) {
@@ -589,11 +589,13 @@ const Restaurants = () => {
           </>
         </Toolbar>
         <div className={classes.tableWrapper}>
-          <Button color="primary" className={classes.button}>연동 완료 #</Button>
-          <Button color="secondary" className={classes.button}>연동 대기중 #</Button>
-          <Button color="inherit" className={classes.button}>심사중 #</Button>
-          <Button color="inherit" className={classes.button}>퍼블리싱 #</Button>
-          <Button color="inherit" className={classes.button}>편집중 #</Button>
+          <div style={{ display: "flex" }}>
+            <Typography variable="button" color="primary" style={{ padding: "15px", fontWeight: "bold", fontSize: "15px" }}>연동 완료 #</Typography>
+            <Typography variable="button" color="secondary" style={{ padding: "15px", fontWeight: "bold", fontSize: "15px" }}>연동 대기중 #</Typography>
+            <Typography variable="button" color="inherit" style={{ padding: "15px", fontWeight: "bold", fontSize: "15px" }}>심사중 #</Typography>
+            <Typography variable="button" color="inherit" style={{ padding: "15px", fontWeight: "bold", fontSize: "15px" }}>퍼블리싱 #</Typography>
+            <Typography variable="button" color="inherit" style={{ padding: "15px", fontWeight: "bold", fontSize: "15px" }}>편집중 #</Typography>
+          </div>
           <Table
             className={classes.table}
             aria-labelledby="tableTitle"
@@ -625,7 +627,6 @@ const Restaurants = () => {
                       selected={isItemSelected}
                     >
                       {state.data.map((rowd, i) => {
-
                         if (rowd.checked == true) {
                           if (row.fkind == rowd.label) {
                             return (
@@ -634,7 +635,6 @@ const Restaurants = () => {
                                   <Checkbox
                                     checked={isItemSelected}
                                     inputProps={{ 'aria-labelledby': labelId }}
-
                                   />
                                 </TableCell>
                                 <TableCell component="th" id={labelId} scope="row" padding="none">
@@ -660,15 +660,15 @@ const Restaurants = () => {
                                     style={{ textDecoration: 'none' }}>
                                     <Button variant="contained" color="secondary" className={classes.button} style={{ color: "white" }}>
                                       정보확인
-                            </Button>
+                              </Button>
                                   </Link>
                                 </TableCell>
                               </Fragment>
                             )
                           }
                         }
-                      })}
-
+                      }
+                      )}
                     </TableRow>
                   );
                 })}
@@ -699,7 +699,7 @@ const Restaurants = () => {
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
-      </Paper>
+      </Paper >
     </div >
   );
 }
