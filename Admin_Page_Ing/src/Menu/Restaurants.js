@@ -346,66 +346,110 @@ const Restaurants = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+
   const [state, setState] = React.useState({
-    checkedA: false,
-    checkedB: false,
-    checkedC: false,
-    checkedD: false,
-    checkedE: false,
-    checkedF: false,
-    checkedG: false,
-    checkedH: false,
-    checkedI: false,
-    checkedJ: false,
-    checkedK: false,
-    checkedL: false,
-    checkedM: false,
-    checkedN: false,
-    checkedO: false,
-    checkedP: false,
-    checkedQ: false,
-    checkedR: false,
+    data: [
+      { "label": "전체선택하기", "checked": false },
+      { "label": "한식", "checked": false },
+      { "label": "글로벌", "checked": false },
+      { "label": "중식", "checked": false },
+      { "label": "일식", "checked": false },
+      { "label": "양식", "checked": false },
+      { "label": "카페&디저트", "checked": false },
+      { "label": "패스트푸드", "checked": false },
+      { "label": "분식", "checked": false },
+    ],
+    la: [
+      { "label": "전체선택하기", "checked": false },
+    ],
+    lw: [
+      { "label": "라페스타-웨스턴돔", "checked": false },
+      { "label": "애니골", "checked": false },
+    ],
+    le: [
+      { "label": "일산 가로수길", "checked": false },
+      { "label": "대화동", "checked": false },
+      { "label": "원마운트", "checked": false },
+      { "label": "킨텍스&맛고을", "checked": false },
+    ],
+    ld: [
+      { "label": "화정 문화의거리", "checked": false },
+      { "label": "수역이마을", "checked": false },
+    ]
   });
-  const createCheckbox = (label, key) => {
-    return { label, key }
+  const handleChange = (idx, gubun) => {
+    setState(prevState => {
+      let state1 = prevState;
+      let state2 = state1;
+      let checkTest = null;
+      switch (gubun) {
+        case "data":
+          checkTest = !state1.data[0].checked;
+          if (idx === 0) {
+            state2.data.map((val, i) => {
+              state1 = Object.assign(state2.data[i], {
+                'checked': checkTest
+              });
+            })
+          } else {
+            state1 = Object.assign(state1.data[idx], {
+              checked: !state1.data[idx].checked
+            });
+          }
+          break;
+        case "la":
+          checkTest = !state1.la[0].checked;
+          if (idx === 0) {
+            state2.la.map((val, i) => {
+              state1 = Object.assign(state2.la[i], {
+                'checked': checkTest
+              });
+            })
+            state2.lw.map((val, i) => {
+              state1 = Object.assign(state2.lw[i], {
+                'checked': checkTest
+              });
+            })
+            state2.le.map((val, i) => {
+              state1 = Object.assign(state2.le[i], {
+                'checked': checkTest
+              });
+            })
+            state2.ld.map((val, i) => {
+              state1 = Object.assign(state2.ld[i], {
+                'checked': checkTest
+              });
+            })
+          } else {
+            state1 = Object.assign(state1.la[idx], {
+              checked: !state1.la[idx].checked
+            });
+          }
+          break;
+        case "lw":
+          checkTest = !state1.lw[0].checked;
+          state1 = Object.assign(state1.lw[idx], {
+            checked: !state1.lw[idx].checked
+          });
+          break;
+        case "le":
+          checkTest = !state1.le[0].checked;
+          state1 = Object.assign(state1.le[idx], {
+            checked: !state1.le[idx].checked
+          });
+          break;
+        case "ld":
+          checkTest = !state1.ld[0].checked;
+          state1 = Object.assign(state1.ld[idx], {
+            checked: !state1.ld[idx].checked
+          });
+          break;
+      }
+      return { ...prevState, state1 };
+    });
   };
 
-  const rows_f_a = [
-    createCheckbox("전체선택하기", 'checkedA'),
-  ]
-  const rows_f = [
-    createCheckbox("한식", 'checkedB'),
-    createCheckbox("글로벌", 'checkedC'),
-    createCheckbox("중식", 'checkedD'),
-    createCheckbox("일식", 'checkedE'),
-    createCheckbox("양식", 'checkedF'),
-    createCheckbox("카페&디저트", 'checkedG'),
-    createCheckbox("패스트푸드", 'checkedH'),
-    createCheckbox("분식", "checkedI"),
-  ];
-  const rows_la = [
-    createCheckbox("전체선택하기", "checkedJ")
-  ]
-  const rows_lw = [
-    createCheckbox("라페스타-웨스턴돔", "checkedK"),
-    createCheckbox("애니골", "checkedL")
-  ]
-  const rows_le = [
-    createCheckbox("일산 가로수길", "checkedM"),
-    createCheckbox("대화동", "checkedN"),
-    createCheckbox("원마운트", "checkedO"),
-    createCheckbox("킨텍스&맛고을", "checkedP")
-  ]
-  const rows_ld = [
-    createCheckbox("화정 문화의거리", "checkedQ"),
-    createCheckbox("수역이마을", "checkedR")
-  ]
-  const handleChange = name => event => {
-    setState({ ...state, [name]: event.target.checked })
-  };
-  // const AllhandleChange = () => {
-  //   setState({ ...state, state: true })
-  // }
   const isSelected = name => selected.indexOf(name) !== -1;
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
@@ -450,27 +494,16 @@ const Restaurants = () => {
                     <Typography variant="h6" style={{ fontWeight: "bold" }}>음식종류</Typography>
                     <FormGroup>
                       {
-                        rows_f_a.map((row, i) => {
+                        state.data.map((row, i) => {
                           return (
                             <FormControlLabel
-                              key={i}
+                              key={`check-${i}`}
                               control={
-                                <Checkbox onChange={AllhandleChange} />
+                                <Checkbox checked={row.checked} onChange={() => handleChange(i, 'data')} />
                               } label={row.label}
                             />);
-                        })}
-                    </FormGroup>
-                    <FormGroup>
-                      {
-                        rows_f.map((row, i) => {
-                          return (
-                            <FormControlLabel
-                              key={i}
-                              control={
-                                <Checkbox onChange={handleChange()} />
-                              } label={row.label}
-                            />);
-                        })}
+                        })
+                      }
                     </FormGroup>
                   </div>
                   <hr style={{ border: "0.5 solid grey", marginRight: "14px" }} />
@@ -478,59 +511,62 @@ const Restaurants = () => {
                     <Typography variant="h6" style={{ fontWeight: "bold" }}>지역</Typography>
                     <FormGroup>
                       {
-                        rows_la.map((row, i) => {
+                        state.la.map((row, i) => {
                           return (
                             <FormControlLabel
-                              key={i}
+                              key={`check-${i}`}
                               control={
-                                <Checkbox onChange={handleChange(row.key)} />
+                                <Checkbox checked={row.checked} onChange={() => handleChange(i, 'la')} />
                               } label={row.label}
                             />);
-                        })}
+                        })
+                      }
                     </FormGroup>
                     <Typography variant="subtitle2" style={{ fontWeight: "bold", color: "grey" }}>일산서구</Typography>
                     <FormGroup>
                       {
-                        rows_lw.map((row, i) => {
+                        state.lw.map((row, i) => {
                           return (
                             <FormControlLabel
-                              key={i}
+                              key={`check-${i}`}
                               control={
-                                <Checkbox onChange={handleChange(row.key)} />
+                                <Checkbox checked={row.checked} onChange={() => handleChange(i, 'lw')} />
                               } label={row.label}
                             />);
-                        })}
+                        })
+                      }
                     </FormGroup>
                     <Typography variant="subtitle2" style={{ fontWeight: "bold", color: "grey" }}>일산동구</Typography>
                     <FormGroup>
                       {
-                        rows_le.map((row, i) => {
+                        state.le.map((row, i) => {
                           return (
                             <FormControlLabel
-                              key={i}
+                              key={`check-${i}`}
                               control={
-                                <Checkbox onChange={handleChange(row.key)} />
+                                <Checkbox checked={row.checked} onChange={() => handleChange(i, 'le')} />
                               } label={row.label}
                             />);
-                        })}
+                        })
+                      }
                     </FormGroup>
                     <Typography variant="subtitle2" style={{ fontWeight: "bold", color: "grey" }}>덕양구</Typography>
                     <FormGroup>
                       {
-                        rows_ld.map((row, i) => {
+                        state.ld.map((row, i) => {
                           return (
                             <FormControlLabel
-                              key={i}
+                              key={`check-${i}`}
                               control={
-                                <Checkbox onChange={handleChange(row.key)} />
+                                <Checkbox checked={row.checked} onChange={() => handleChange(i, 'ld')} />
                               } label={row.label}
                             />);
-                        })}
+                        })
+                      }
                     </FormGroup>
                   </div>
                 </FormGroup>
-                );
-          </StyledMenuItem>
+              </StyledMenuItem>
             </StyledMenu>
             <Tooltip title="Setting">
               <IconButton aria-label="Setting">
@@ -580,7 +616,7 @@ const Restaurants = () => {
                       key={row.ctel}
                       selected={isItemSelected}
                     >
-                      {state.checkedA && (
+                      {state.data.checkedA && (
                         <>
                           <TableCell padding="checkbox">
                             <Checkbox
