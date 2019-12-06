@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { fade, lighten, makeStyles, withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -19,6 +19,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { Link, useHistory } from 'react-router-dom';
 
 //Icons
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -35,7 +36,13 @@ function createData(date, cname, area, fkind, ctel, cing, cinfo) {
 
 const rows = [
   createData("2019.11.18", "test", "일산동구", "한식", "031-1234-5678", "연동 완료"),
-  createData("2019.11.18", "test1", "일산서구", "중식", "031-2345-6789", "연동 대기중")
+  createData("2019.11.18", "test1", "일산서구", "글로벌", "041-2345-6789", "연동 대기중"),
+  createData("2019.11.18", "test", "일산동구", "중식", "051-1234-5678", "연동 완료"),
+  createData("2019.11.18", "test1", "일산서구", "일식", "061-2345-6789", "연동 대기중"),
+  createData("2019.11.18", "test", "일산동구", "양식", "032-1234-5678", "연동 완료"),
+  createData("2019.11.18", "test1", "일산 가로수길", "카페&디저트", "042-2345-6789", "연동 대기중"),
+  createData("2019.11.18", "test", "덕양구", "패스트푸드", "052-1234-5678", "연동 완료"),
+  createData("2019.11.18", "test1", "일산서구", "분식", "062-2345-6789", "연동 대기중")
 ];
 
 function desc(a, b, orderBy) {
@@ -63,7 +70,7 @@ function getSorting(order, orderBy) {
 }
 
 const headCells = [
-  { id: 'date', numeric: false, disablePadding: true, label: '가입일' },
+  { id: 'date', numeric: false, disablePadding: true, label: '등록일' },
   { id: 'cname', numeric: false, disablePadding: true, label: '업체 이름' },
   { id: 'area', numeric: false, disablePadding: false, label: '지역' },
   { id: 'fkind', numeric: false, disablePadding: true, label: '음식종류' },
@@ -301,6 +308,7 @@ const Restaurants = () => {
   const [set, setSet] = React.useState('');
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const history = useHistory();
 
   const handleRequestSort = (event, property) => {
     const isDesc = orderBy === property && order === 'desc';
@@ -616,26 +624,51 @@ const Restaurants = () => {
                       key={row.ctel}
                       selected={isItemSelected}
                     >
-                      {state.data.checkedA && (
-                        <>
-                          <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={isItemSelected}
-                              inputProps={{ 'aria-labelledby': labelId }}
-                            />
-                            {}
-                          </TableCell>
-                          <TableCell component="th" id={labelId} scope="row" padding="none">
-                            {row.date}
-                          </TableCell>
-                          <TableCell align="left">{row.cname}</TableCell>
-                          <TableCell align="left">{row.area}</TableCell>
-                          <TableCell align="left">{row.fkind}</TableCell>
-                          <TableCell align="left">{row.ctel}</TableCell>
-                          <TableCell align="left">{row.cing}</TableCell>
-                          <TableCell align="left">{row.cinfo}</TableCell>
-                        </>
-                      )}
+                      {state.data.map((rowd, i) => {
+
+                        if (rowd.checked == true) {
+                          if (row.fkind == rowd.label) {
+                            return (
+                              <Fragment key={`table_select-${i}`}>
+                                <TableCell padding="checkbox">
+                                  <Checkbox
+                                    checked={isItemSelected}
+                                    inputProps={{ 'aria-labelledby': labelId }}
+
+                                  />
+                                </TableCell>
+                                <TableCell component="th" id={labelId} scope="row" padding="none">
+                                  {row.date}
+                                </TableCell>
+                                <TableCell align="left">{row.cname}</TableCell>
+                                <TableCell align="left">{row.area}</TableCell>
+                                <TableCell align="left">{row.fkind}</TableCell>
+                                <TableCell align="left">{row.ctel}</TableCell>
+                                <TableCell align="left">{row.cing}</TableCell>
+                                <TableCell align="left">
+                                  <Link
+                                    to={{
+                                      pathname: `${history.location.pathname}/` + `${row.cname}`,
+                                      query: {
+                                        name: row.cname,
+                                        area: row.area,
+                                        fkind: row.fkind,
+                                        ctel: row.ctel,
+                                        cing: row.cing,
+                                      }
+                                    }}
+                                    style={{ textDecoration: 'none' }}>
+                                    <Button variant="contained" color="secondary" className={classes.button} style={{ color: "white" }}>
+                                      정보확인
+                            </Button>
+                                  </Link>
+                                </TableCell>
+                              </Fragment>
+                            )
+                          }
+                        }
+                      })}
+
                     </TableRow>
                   );
                 })}
@@ -667,7 +700,7 @@ const Restaurants = () => {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
-    </div>
+    </div >
   );
 }
 export default Restaurants;
